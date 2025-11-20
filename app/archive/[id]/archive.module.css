@@ -1,0 +1,41 @@
+/* 
+ * Scoped styles for archived designs
+ * These styles are isolated and don't affect other designs
+ * Global styles from globals.css don't apply here
+ */
+
+.archiveContainer {
+  min-height: 100vh;
+  /* Example: This design could have its own color scheme */
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 2rem;
+}
+
+.archiveContent {
+  max-width: 1200px;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 1rem;
+  padding: 3rem;
+  color: white;
+}
+
+.archiveContent h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.archiveContent p {
+  font-size: 1.25rem;
+  line-height: 1.75;
+  margin-bottom: 1rem;
+  opacity: 0.9;
+}
+
+/* 
+ * When archiving a design, copy its component and styles here
+ * Each archived design maintains complete independence
+ */
+
