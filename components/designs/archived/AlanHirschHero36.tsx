@@ -45,7 +45,7 @@ const notifications = [
   { id: "note-02", message: "QA stage ready for assignment", time: "10m ago" },
 ]
 
-export default function AlanHirschHero() {
+export default function AlanHirschHero36() {
   const [stages, setStages] = useState(initialStages)
 
   const advanceStage = (id: string) => {
