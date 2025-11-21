@@ -7,6 +7,79 @@ import { useState, useRef, useCallback } from "react"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 
+const promptOptions = [
+  {
+    title: "Neon Stadium Legend",
+    subtitle: "Vibrant lights + motion trails",
+    prompt:
+      "Use the provided athlete photo as the central figure. Keep their likeness intact while placing them under night-game neon stadium lights with dramatic rim lighting, particle sparks, and glowing typography.",
+    gradient: "from-blue-500/80 to-purple-500/80",
+  },
+  {
+    title: "Retro 90s Hologram",
+    subtitle: "Throwback foil sheen",
+    prompt:
+      "Keep the uploaded player intact and wrap them in a 1990s holographic trading card aesthetic with teal + purple gradients, chrome borders, and etched foil patterns.",
+    gradient: "from-purple-500/80 to-pink-500/80",
+  },
+  {
+    title: "Golden Hour MVP",
+    subtitle: "Sunset drama + lens flare",
+    prompt:
+      "Retain the subject from the base image and bathe them in golden hour sunlight with cinematic lens flares, soft dust motes, and a warm championship glow.",
+    gradient: "from-amber-500/80 to-orange-500/80",
+  },
+  {
+    title: "Cosmic All-Star",
+    subtitle: "Galaxy courtside energy",
+    prompt:
+      "Preserve the athlete while surrounding them with cosmic clouds, constellations, and electric energy rings inspired by premium sci-fi sports cards.",
+    gradient: "from-indigo-500/80 to-cyan-500/80",
+  },
+  {
+    title: "Electric Rookie Debut",
+    subtitle: "Confetti + broadcast overlays",
+    prompt:
+      "Highlight the provided image with bold TV broadcast graphics, dynamic diagonal typography, confetti, and scoreboard HUD elements celebrating a rookie debut.",
+    gradient: "from-pink-500/80 to-red-500/80",
+  },
+  {
+    title: "Icebound Defender",
+    subtitle: "Cool blues + crystalline shards",
+    prompt:
+      "Use the uploaded subject and embed them in a frosted, ice-shard environment with cool teal lighting, crystalline typography, and vapor trails.",
+    gradient: "from-sky-500/80 to-blue-600/80",
+  },
+  {
+    title: "Streetball Graffiti",
+    subtitle: "Concrete + spray texture",
+    prompt:
+      "Keep the athlete recognizable while compositing them onto an urban court backdrop with graffiti layers, gritty textures, neon paint drips, and bold stencil stats.",
+    gradient: "from-lime-500/80 to-emerald-500/80",
+  },
+  {
+    title: "Championship Parade",
+    subtitle: "Ticker tape celebration",
+    prompt:
+      "Maintain the original player and set them amid a championship parade scene with ticker tape, cheering silhouettes, gold confetti, and metallic embossing.",
+    gradient: "from-yellow-400/80 to-amber-500/80",
+  },
+  {
+    title: "Monochrome Icon",
+    subtitle: "Black + white with a single accent",
+    prompt:
+      "Transform the base image into a high-contrast monochrome portrait that keeps the face natural while adding one bold accent color stripe and luxe typography.",
+    gradient: "from-slate-500/80 to-gray-800/80",
+  },
+  {
+    title: "Vaporwave Velocity",
+    subtitle: "Synth gradients + grid horizon",
+    prompt:
+      "Respect the subject's likeness and stage them in a vaporwave-inspired scene with magenta/cyan gradients, a retro-future grid floor, and chrome numbering.",
+    gradient: "from-fuchsia-500/80 to-cyan-400/80",
+  },
+]
+
 // Design Choice: AI-Powered Baseball Card Customizer
 // 1-of-1 custom sports card editor with image upload
 // AI image generation integration UI (ChatGPT 4o)
@@ -14,6 +87,7 @@ import Link from "next/link"
 
 export default function AlanHirschHero() {
   const [uploadedImage, setUploadedImage] = useState<string | null>(null)
+  const [generatedImage, setGeneratedImage] = useState<string | null>(null)
   const [cardData, setCardData] = useState({
     name: "",
     position: "",
@@ -24,6 +98,10 @@ export default function AlanHirschHero() {
   const [aiPrompt, setAiPrompt] = useState("")
   const [isGenerating, setIsGenerating] = useState(false)
   const [showAiPanel, setShowAiPanel] = useState(false)
+  const [selectedPromptIndex, setSelectedPromptIndex] = useState<number | null>(null)
+  const [generationError, setGenerationError] = useState<string | null>(null)
+  const [revisedPrompt, setRevisedPrompt] = useState<string | null>(null)
+  const [lastGeneratedAt, setLastGeneratedAt] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleImageUpload = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,6 +110,7 @@ export default function AlanHirschHero() {
       const reader = new FileReader()
       reader.onloadend = () => {
         setUploadedImage(reader.result as string)
+        setGeneratedImage(null)
       }
       reader.readAsDataURL(file)
     }
@@ -48,19 +127,66 @@ export default function AlanHirschHero() {
       const reader = new FileReader()
       reader.onloadend = () => {
         setUploadedImage(reader.result as string)
+        setGeneratedImage(null)
       }
       reader.readAsDataURL(file)
     }
   }, [])
 
-  const handleAiGenerate = () => {
+  const handlePresetSelect = useCallback((prompt: string, index: number) => {
+    setAiPrompt(prompt)
+    setSelectedPromptIndex(index)
+    setShowAiPanel(true)
+  }, [])
+
+  const handleAiGenerate = useCallback(async () => {
+    if (!uploadedImage) {
+      setGenerationError("Upload or select a base image first.")
+      return
+    }
+
+    if (!aiPrompt.trim()) {
+      setGenerationError("Choose a preset or write a prompt before generating.")
+      return
+    }
+
     setIsGenerating(true)
-    // Simulate AI generation (placeholder - not connected)
-    setTimeout(() => {
+    setGenerationError(null)
+
+    try {
+      const response = await fetch("/api/cardforge/generate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          prompt: `${aiPrompt.trim()} Style it like a premium sports trading card and keep the athlete faithful to the base photo.`,
+          imageDataUrl: uploadedImage,
+        }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || "Image generation failed.")
+      }
+
+      if (data.image) {
+        setGeneratedImage(`data:image/png;base64,${data.image}`)
+        setRevisedPrompt(data.revisedPrompt ?? null)
+        setLastGeneratedAt(new Date().toLocaleTimeString())
+      }
+    } catch (error) {
+      console.error(error)
+      setGenerationError(
+        error instanceof Error ? error.message : "Unable to generate image. Please try again."
+      )
+    } finally {
       setIsGenerating(false)
-      // In real implementation, this would call ChatGPT 4o API
-    }, 3000)
-  }
+    }
+  }, [aiPrompt, uploadedImage])
+
+  const activeCardImage = generatedImage ?? uploadedImage
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0a0a0f] via-[#1a1a2e] to-[#0a0a0f] text-white">
@@ -128,6 +254,8 @@ export default function AlanHirschHero() {
                       onClick={(e) => {
                         e.stopPropagation()
                         setUploadedImage(null)
+                        setGeneratedImage(null)
+                        setSelectedPromptIndex(null)
                       }}
                       className="absolute top-2 right-2 px-3 py-1 bg-red-500 hover:bg-red-600 rounded-lg text-sm font-semibold"
                     >
@@ -143,6 +271,28 @@ export default function AlanHirschHero() {
                   </div>
                 )}
               </div>
+              {uploadedImage && (
+                <div className="bg-gray-900/70 border border-gray-800 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                  <div>
+                    <p className="text-sm font-semibold uppercase tracking-widest text-gray-300">
+                      Preselected base image
+                    </p>
+                    <p className="text-sm text-gray-400">
+                      We lock this photo into every OpenAI edit so the athlete always stays on-model.
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => {
+                      setUploadedImage(null)
+                      setGeneratedImage(null)
+                      setSelectedPromptIndex(null)
+                    }}
+                    className="text-sm font-semibold text-blue-300 hover:text-blue-200 underline"
+                  >
+                    Choose different photo
+                  </button>
+                </div>
+              )}
 
               {/* Card Details Form */}
               <div className="bg-gray-900/50 rounded-2xl p-6 border border-gray-800 space-y-4">
@@ -225,18 +375,46 @@ export default function AlanHirschHero() {
                       exit={{ opacity: 0, height: 0 }}
                       className="space-y-4"
                     >
+                      <div className="space-y-3">
+                        <p className="text-sm font-semibold text-gray-300 uppercase tracking-widest">
+                          Pick a style
+                        </p>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                          {promptOptions.map((preset, index) => (
+                            <button
+                              key={preset.title}
+                              type="button"
+                              onClick={() => handlePresetSelect(preset.prompt, index)}
+                              className={`text-left rounded-2xl border px-4 py-4 bg-gradient-to-r ${preset.gradient} transition-all duration-200 hover:scale-[1.02] ${
+                                selectedPromptIndex === index
+                                  ? "border-white/70 shadow-lg shadow-purple-500/30"
+                                  : "border-white/20 shadow-md shadow-black/30"
+                              }`}
+                              aria-pressed={selectedPromptIndex === index}
+                            >
+                              <p className="text-sm font-semibold text-white">{preset.title}</p>
+                              <p className="text-xs text-gray-100/80 mt-1">{preset.subtitle}</p>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
                       <div>
                         <label className="block text-sm font-semibold text-gray-300 mb-2">
-                          Describe your card image
+                          Or describe your own concept
                         </label>
                         <textarea
                           value={aiPrompt}
                           onChange={(e) => setAiPrompt(e.target.value)}
-                          placeholder="e.g., 'A professional baseball player in action, dynamic pose, stadium background, dramatic lighting'"
+                          placeholder="e.g., 'Dynamic overhead dunk, chrome typography, raining sparks, midnight arena'"
                           rows={3}
                           className="w-full px-4 py-3 bg-gray-800/50 border border-purple-500/30 rounded-lg focus:outline-none focus:border-purple-500 text-white resize-none"
                         />
                       </div>
+                      {generationError && (
+                        <div className="rounded-xl border border-red-500/60 bg-red-500/10 px-4 py-3 text-sm text-red-200">
+                          {generationError}
+                        </div>
+                      )}
                       <Button
                         onClick={handleAiGenerate}
                         disabled={!aiPrompt || isGenerating}
@@ -245,15 +423,39 @@ export default function AlanHirschHero() {
                         {isGenerating ? (
                           <span className="flex items-center gap-2">
                             <span className="animate-spin">⏳</span>
-                            Generating with AI...
+                            Generating with OpenAI...
                           </span>
                         ) : (
-                          "Generate Image with ChatGPT 4o"
+                          "Generate card art with OpenAI"
                         )}
                       </Button>
                       <p className="text-xs text-gray-400">
-                        Note: This is a demonstration. In production, this would connect to ChatGPT 4o's image generation API to create your custom card image.
+                        We submit your prompt + base image through the OpenAI Responses API with the
+                        `image_generation` tool (`size: 1024x1536`, `quality: high`, `background:
+                        transparent`) as detailed in the SDK documentation.
                       </p>
+                      {(revisedPrompt || lastGeneratedAt) && (
+                        <div className="rounded-xl border border-white/10 bg-white/5 p-4 text-sm space-y-2 text-gray-200">
+                          {lastGeneratedAt && (
+                            <p>
+                              <span className="font-semibold text-white">Last render:</span>{" "}
+                              {lastGeneratedAt}
+                            </p>
+                          )}
+                          {revisedPrompt && (
+                            <p className="text-gray-300">
+                              <span className="font-semibold text-white">Model refinement:</span>{" "}
+                              {revisedPrompt}
+                            </p>
+                          )}
+                        </div>
+                      )}
+                      {generatedImage && (
+                        <div className="rounded-2xl border border-emerald-500/50 bg-emerald-500/10 p-4 text-sm text-emerald-100">
+                          New AI artwork is live in your card preview. Download the card to grab the
+                          transparent PNG.
+                        </div>
+                      )}
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -270,10 +472,10 @@ export default function AlanHirschHero() {
               <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl p-8 border-2 border-gray-700 shadow-2xl">
                 <h3 className="text-2xl font-bold mb-6 text-center">Card Preview</h3>
                 <div className="relative aspect-[2.5/3.5] bg-gradient-to-br from-blue-900/20 to-purple-900/20 rounded-2xl overflow-hidden border-2 border-gray-600">
-                  {uploadedImage ? (
+                  {activeCardImage ? (
                     <div className="relative w-full h-full">
                       <Image
-                        src={uploadedImage}
+                        src={activeCardImage}
                         alt="Card"
                         fill
                         className="object-cover"

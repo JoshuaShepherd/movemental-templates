@@ -15,8 +15,8 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger)
 }
 
-// Design Choice: GSAP-Powered with Classic Academic Palette
-// Classic, urbane, academic color scheme: deep navy, burgundy, charcoal, cream, gold accents
+// Design Choice: GSAP-Powered with Royal Academic Palette
+// Updated palette uses regal violet primaries, luminous gold accents, and duotone shadows for a refined academic tone
 // Extensive GSAP features: timelines, ScrollTrigger, pinning, scrubbing, stagger, parallax
 
 export default function AlanHirschHero() {
@@ -291,7 +291,7 @@ export default function AlanHirschHero() {
         .to(
           card.querySelector(".insight-title"),
           {
-            color: "#d4af37", // Gold on hover
+            color: "#f0c36a", // Gold on hover
             duration: 0.3,
           },
           "<"
@@ -394,7 +394,7 @@ export default function AlanHirschHero() {
         .to(
           card.querySelector(".movement-title"),
           {
-            color: "#d4af37",
+            color: "#f0c36a",
             duration: 0.3,
           },
           "<"
@@ -814,7 +814,7 @@ export default function AlanHirschHero() {
         .to(
           card.querySelector(".morph-title"),
           {
-            color: "#d4af37",
+            color: "#f0c36a",
             y: -5,
             duration: 0.3,
           },
@@ -931,7 +931,7 @@ export default function AlanHirschHero() {
   }, { scope: imageRevealRef })
 
   return (
-    <div className="min-h-screen bg-[#1a2332] text-[#f5f5f0] relative overflow-hidden">
+    <div className="min-h-screen bg-[#130b24] text-[#f7f3ff] relative overflow-hidden">
       {/* Hero Section with GSAP Animations */}
       <section ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden">
         {/* Hero Image with Parallax */}
@@ -944,27 +944,27 @@ export default function AlanHirschHero() {
             className="object-cover object-center"
             sizes="100vw"
           />
-          <div className="hero-overlay absolute inset-0 bg-gradient-to-b from-[#1a2332]/90 via-[#2c3e50]/80 to-[#1a2332]/95" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#1a2332] via-transparent to-transparent" />
+          <div className="hero-overlay absolute inset-0 bg-gradient-to-b from-[#130b24]/90 via-[#221135]/80 to-[#130b24]/95" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#130b24] via-transparent to-transparent" />
         </div>
 
         {/* Hero Content */}
         <div className="relative z-10 max-w-6xl mx-auto px-6 text-center">
           <h1
             ref={titleRef}
-            className="text-7xl md:text-8xl lg:text-9xl font-black mb-8 text-[#f5f5f0] tracking-tighter leading-none font-[var(--font-playfair)]"
+            className="text-7xl md:text-8xl lg:text-9xl font-black mb-8 text-[#f7f3ff] tracking-tighter leading-none font-[var(--font-playfair)]"
           >
             Alan Hirsch
           </h1>
           <p
             ref={subtitleRef}
-            className="text-2xl md:text-3xl lg:text-4xl text-[#d4af37] mb-6 font-light max-w-3xl mx-auto leading-tight"
+            className="text-2xl md:text-3xl lg:text-4xl text-[#f0c36a] mb-6 font-light max-w-3xl mx-auto leading-tight"
           >
             Pioneer of Missional Movements
           </p>
           <p
             ref={descriptionRef}
-            className="text-lg md:text-xl text-[#e8e8e0] mb-12 max-w-2xl mx-auto leading-relaxed"
+            className="text-lg md:text-xl text-[#e3d4ff] mb-12 max-w-2xl mx-auto leading-relaxed"
           >
             Thought leader, author, and catalyst for church transformation
             through apostolic imagination and organic community
@@ -972,14 +972,14 @@ export default function AlanHirschHero() {
           <div ref={buttonsRef} className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
               size="lg"
-              className="gsap-button text-lg px-10 py-7 h-auto bg-[#8b2635] text-[#f5f5f0] hover:bg-[#6b1f2a] shadow-2xl border-0 font-semibold"
+              className="gsap-button text-lg px-10 py-7 h-auto bg-[#5b21b6] text-[#f7f3ff] hover:bg-[#43128b] shadow-2xl border-0 font-semibold"
             >
               Explore His Work
             </Button>
             <Button
               variant="outline"
               size="lg"
-              className="gsap-button text-lg px-10 py-7 h-auto border-2 border-[#d4af37]/60 text-[#d4af37] hover:bg-[#d4af37]/10 backdrop-blur-sm font-semibold"
+              className="gsap-button text-lg px-10 py-7 h-auto border-2 border-[#f0c36a]/60 text-[#f0c36a] hover:bg-[#f0c36a]/10 backdrop-blur-sm font-semibold"
             >
               Learn More
             </Button>
@@ -989,21 +989,21 @@ export default function AlanHirschHero() {
         {/* Scroll indicator with GSAP animation */}
         <div className="scroll-indicator-container absolute bottom-12 left-1/2 transform -translate-x-1/2 z-10">
           <div className="flex flex-col items-center gap-2">
-            <span className="text-[#d4af37]/80 text-sm font-medium tracking-wider uppercase">Scroll</span>
-            <div className="w-6 h-10 border-2 border-[#d4af37]/40 rounded-full flex items-start justify-center p-2 backdrop-blur-sm bg-[#1a2332]/50">
-              <div className="scroll-indicator w-1.5 h-1.5 bg-[#d4af37] rounded-full" />
+            <span className="text-[#f0c36a]/80 text-sm font-medium tracking-wider uppercase">Scroll</span>
+            <div className="w-6 h-10 border-2 border-[#f0c36a]/40 rounded-full flex items-start justify-center p-2 backdrop-blur-sm bg-[#130b24]/50">
+              <div className="scroll-indicator w-1.5 h-1.5 bg-[#f0c36a] rounded-full" />
             </div>
           </div>
         </div>
       </section>
 
       {/* Insights Section with GSAP Stagger */}
-      <section ref={insightsRef} className="relative py-32 px-6 bg-gradient-to-b from-[#1a2332] to-[#2c3e50]">
+      <section ref={insightsRef} className="relative py-32 px-6 bg-gradient-to-b from-[#130b24] to-[#221135]">
         <div className="max-w-7xl mx-auto">
-          <h2 className="section-title text-5xl md:text-6xl font-black mb-6 text-[#f5f5f0] tracking-tight text-center font-[var(--font-playfair)]">
+          <h2 className="section-title text-5xl md:text-6xl font-black mb-6 text-[#f7f3ff] tracking-tight text-center font-[var(--font-playfair)]">
             Core Insights
           </h2>
-          <p className="text-xl md:text-2xl text-[#e8e8e0] max-w-3xl mx-auto leading-relaxed text-center mb-20">
+          <p className="text-xl md:text-2xl text-[#e3d4ff] max-w-3xl mx-auto leading-relaxed text-center mb-20">
             Foundational concepts that shape missional thinking and practice
           </p>
 
@@ -1011,15 +1011,15 @@ export default function AlanHirschHero() {
             {insights.map((insight, index) => (
               <Card
                 key={index}
-                className="insight-card h-full border-2 border-[#3a3a3a] hover:border-[#d4af37] transition-colors duration-300 cursor-pointer bg-[#2d2d2d] shadow-xl hover:shadow-2xl hover:shadow-[#d4af37]/20 overflow-hidden"
+                className="insight-card h-full border-2 border-[#432659] hover:border-[#f0c36a] transition-colors duration-300 cursor-pointer bg-[#2a1538] shadow-xl hover:shadow-2xl hover:shadow-[#f0c36a]/20 overflow-hidden"
               >
                 <CardHeader className="pb-4 pt-8">
-                  <CardTitle className="insight-title !text-xl !mb-4 !text-[#f5f5f0] !font-bold">
+                  <CardTitle className="insight-title !text-xl !mb-4 !text-[#f7f3ff] !font-bold">
                     {insight.title}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <CardDescription className="insight-description !text-base !text-[#e8e8e0] !leading-relaxed !font-normal">
+                  <CardDescription className="insight-description !text-base !text-[#e3d4ff] !leading-relaxed !font-normal">
                     {insight.description}
                   </CardDescription>
                 </CardContent>
@@ -1030,12 +1030,12 @@ export default function AlanHirschHero() {
       </section>
 
       {/* Movements Section with GSAP Pin and Scroll Triggers */}
-      <section ref={movementsRef} className="relative py-32 px-6 bg-[#2c3e50]">
+      <section ref={movementsRef} className="relative py-32 px-6 bg-[#221135]">
         <div className="max-w-7xl mx-auto">
-          <h2 className="section-title text-5xl md:text-6xl font-black mb-6 text-[#f5f5f0] tracking-tight text-center font-[var(--font-playfair)]">
+          <h2 className="section-title text-5xl md:text-6xl font-black mb-6 text-[#f7f3ff] tracking-tight text-center font-[var(--font-playfair)]">
             Key Works
           </h2>
-          <p className="text-xl md:text-2xl text-[#e8e8e0] max-w-3xl mx-auto leading-relaxed text-center mb-20">
+          <p className="text-xl md:text-2xl text-[#e3d4ff] max-w-3xl mx-auto leading-relaxed text-center mb-20">
             Seminal books that have shaped missional thinking worldwide
           </p>
 
@@ -1043,41 +1043,41 @@ export default function AlanHirschHero() {
             {movements.map((movement, index) => (
               <Card
                 key={index}
-                className="movement-card h-full border-2 border-[#3a3a3a] hover:border-[#d4af37] transition-colors duration-300 cursor-pointer bg-[#1a2332] shadow-xl hover:shadow-2xl hover:shadow-[#d4af37]/30 overflow-hidden"
+                className="movement-card h-full border-2 border-[#432659] hover:border-[#f0c36a] transition-colors duration-300 cursor-pointer bg-[#130b24] shadow-xl hover:shadow-2xl hover:shadow-[#f0c36a]/30 overflow-hidden"
               >
                 <CardHeader className="pb-4 pt-6">
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex-1">
-                      <CardTitle className="movement-title !text-2xl !mb-2 !text-[#f5f5f0] !font-bold leading-tight">
+                      <CardTitle className="movement-title !text-2xl !mb-2 !text-[#f7f3ff] !font-bold leading-tight">
                         {movement.title}
                       </CardTitle>
-                      <p className="text-sm font-semibold text-[#d4af37] mb-3">
+                      <p className="text-sm font-semibold text-[#f0c36a] mb-3">
                         {movement.subtitle}
                       </p>
                     </div>
                     <div className="text-right ml-4">
-                      <span className="movement-year inline-block px-3 py-1 bg-[#8b2635] text-[#f5f5f0] text-sm font-bold rounded-full shadow-lg">
+                      <span className="movement-year inline-block px-3 py-1 bg-[#5b21b6] text-[#f7f3ff] text-sm font-bold rounded-full shadow-lg">
                         {movement.year}
                       </span>
                     </div>
                   </div>
                   <div className="flex items-center gap-2 mb-3">
-                    <span className="movement-meta text-xs font-medium !text-[#b8b8a8] uppercase tracking-wider">
+                    <span className="movement-meta text-xs font-medium !text-[#d2c4ff] uppercase tracking-wider">
                       {movement.category}
                     </span>
-                    <span className="movement-meta !text-[#5d5d4d]">•</span>
-                    <span className="movement-meta text-xs font-medium text-[#d4af37]">
+                    <span className="movement-meta !text-[#8c7abf]">•</span>
+                    <span className="movement-meta text-xs font-medium text-[#f0c36a]">
                       {movement.impact}
                     </span>
                   </div>
                   <div className="mb-3">
-                    <span className="movement-meta text-xs font-medium !text-[#d4af37] italic">
+                    <span className="movement-meta text-xs font-medium !text-[#f0c36a] italic">
                       {movement.highlight}
                     </span>
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <CardDescription className="reveal-text !text-base !text-[#e8e8e0] !leading-relaxed !font-normal">
+                  <CardDescription className="reveal-text !text-base !text-[#e3d4ff] !leading-relaxed !font-normal">
                     {movement.description}
                   </CardDescription>
                 </CardContent>
@@ -1088,17 +1088,17 @@ export default function AlanHirschHero() {
       </section>
 
       {/* Pinned Section with Scrubbed Animation */}
-      <section ref={pinnedSectionRef} className="relative py-32 px-6 bg-[#1a2332]">
-        <div className="pinned-bg-element absolute top-20 right-20 w-96 h-96 bg-[#8b2635] rounded-full opacity-20 blur-3xl" />
-        <div className="pinned-bg-element absolute bottom-20 left-20 w-96 h-96 bg-[#2d5016] rounded-full opacity-20 blur-3xl" />
-        <div className="pinned-bg-element absolute top-1/2 left-1/3 w-96 h-96 bg-[#5d4037] rounded-full opacity-15 blur-3xl" />
+      <section ref={pinnedSectionRef} className="relative py-32 px-6 bg-[#130b24]">
+        <div className="pinned-bg-element absolute top-20 right-20 w-96 h-96 bg-[#5b21b6] rounded-full opacity-20 blur-3xl" />
+        <div className="pinned-bg-element absolute bottom-20 left-20 w-96 h-96 bg-[#2b1140] rounded-full opacity-20 blur-3xl" />
+        <div className="pinned-bg-element absolute top-1/2 left-1/3 w-96 h-96 bg-[#3c1b4e] rounded-full opacity-15 blur-3xl" />
         
         <div className="relative z-10 max-w-4xl mx-auto">
           <div className="pinned-content opacity-0 text-center">
-            <h2 className="text-5xl md:text-6xl font-black mb-8 text-[#f5f5f0] tracking-tight font-[var(--font-playfair)]">
+            <h2 className="text-5xl md:text-6xl font-black mb-8 text-[#f7f3ff] tracking-tight font-[var(--font-playfair)]">
               Academic Excellence
             </h2>
-            <p className="text-xl md:text-2xl text-[#e8e8e0] mb-12 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-xl md:text-2xl text-[#e3d4ff] mb-12 max-w-2xl mx-auto leading-relaxed">
               Alan Hirsch's scholarly work bridges theory and practice, creating frameworks
               that have been adopted by theological institutions and church movements globally.
             </p>
@@ -1107,19 +1107,19 @@ export default function AlanHirschHero() {
       </section>
 
       {/* Impact Section with GSAP Timeline */}
-      <section className="relative py-32 px-6 bg-[#2c3e50]">
+      <section className="relative py-32 px-6 bg-[#221135]">
         <div className="max-w-4xl mx-auto">
-          <div className="impact-cta border-2 border-[#d4af37]/30 rounded-3xl p-12 md:p-16 bg-gradient-to-br from-[#1a2332] to-[#2c3e50] text-center">
-            <h2 className="text-5xl md:text-6xl font-black mb-8 text-[#f5f5f0] tracking-tight font-[var(--font-playfair)]">
+          <div className="impact-cta border-2 border-[#f0c36a]/30 rounded-3xl p-12 md:p-16 bg-gradient-to-br from-[#130b24] to-[#221135] text-center">
+            <h2 className="text-5xl md:text-6xl font-black mb-8 text-[#f7f3ff] tracking-tight font-[var(--font-playfair)]">
               Shaping the Future
             </h2>
-            <p className="text-xl md:text-2xl text-[#e8e8e0] mb-12 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-xl md:text-2xl text-[#e3d4ff] mb-12 max-w-2xl mx-auto leading-relaxed">
               Alan Hirsch's work has influenced thousands of churches and leaders worldwide,
               activating apostolic imagination and missional DNA in communities across the globe.
             </p>
             <Button
               size="lg"
-              className="gsap-button text-lg px-10 py-7 h-auto bg-[#8b2635] text-[#f5f5f0] hover:bg-[#6b1f2a] shadow-2xl border-0 font-semibold"
+              className="gsap-button text-lg px-10 py-7 h-auto bg-[#5b21b6] text-[#f7f3ff] hover:bg-[#43128b] shadow-2xl border-0 font-semibold"
             >
               Explore the Movement
             </Button>
@@ -1128,7 +1128,7 @@ export default function AlanHirschHero() {
       </section>
 
       {/* Horizontal Scrolling Section */}
-      <section ref={horizontalScrollRef} className="relative py-32 px-6 bg-[#1a2332] overflow-hidden">
+      <section ref={horizontalScrollRef} className="relative py-32 px-6 bg-[#130b24] overflow-hidden">
         <div className="horizontal-scroll-wrapper w-full">
           <div className="horizontal-scroll-container flex gap-8 w-max">
             {[
@@ -1139,10 +1139,10 @@ export default function AlanHirschHero() {
               { title: "Education", stat: "Global", desc: "Seminaries & institutions" },
               { title: "Movement", stat: "Worldwide", desc: "Missional communities" },
             ].map((item, index) => (
-              <div key={index} className="horizontal-item min-w-[300px] bg-[#2d2d2d] border-2 border-[#3a3a3a] rounded-lg p-8">
-                <h3 className="text-2xl font-bold text-[#d4af37] mb-2">{item.title}</h3>
-                <div className="text-5xl font-black text-[#f5f5f0] mb-2">{item.stat}</div>
-                <p className="text-[#e8e8e0]">{item.desc}</p>
+              <div key={index} className="horizontal-item min-w-[300px] bg-[#2a1538] border-2 border-[#432659] rounded-lg p-8">
+                <h3 className="text-2xl font-bold text-[#f0c36a] mb-2">{item.title}</h3>
+                <div className="text-5xl font-black text-[#f7f3ff] mb-2">{item.stat}</div>
+                <p className="text-[#e3d4ff]">{item.desc}</p>
               </div>
             ))}
           </div>
@@ -1150,21 +1150,21 @@ export default function AlanHirschHero() {
       </section>
 
       {/* Split Text Animation Section */}
-      <section className="relative py-32 px-6 bg-[#2c3e50]">
+      <section className="relative py-32 px-6 bg-[#221135]">
         <div className="max-w-5xl mx-auto">
-          <h2 className="text-5xl md:text-6xl font-black mb-12 text-[#f5f5f0] tracking-tight text-center font-[var(--font-playfair)]">
+          <h2 className="text-5xl md:text-6xl font-black mb-12 text-[#f7f3ff] tracking-tight text-center font-[var(--font-playfair)]">
             <span className="split-text inline-block">Theological Innovation</span>
           </h2>
-          <p className="split-text-paragraph text-xl md:text-2xl text-[#e8e8e0] max-w-3xl mx-auto leading-relaxed text-center">
+          <p className="split-text-paragraph text-xl md:text-2xl text-[#e3d4ff] max-w-3xl mx-auto leading-relaxed text-center">
             Through decades of research and practice, Alan Hirsch has developed frameworks that transform how we understand church, mission, and community.
           </p>
         </div>
       </section>
 
       {/* Interactive Timeline Section */}
-      <section ref={timelineSectionRef} className="relative py-32 px-6 bg-[#1a2332]">
+      <section ref={timelineSectionRef} className="relative py-32 px-6 bg-[#130b24]">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-5xl md:text-6xl font-black mb-20 text-[#f5f5f0] tracking-tight text-center font-[var(--font-playfair)]">
+          <h2 className="text-5xl md:text-6xl font-black mb-20 text-[#f7f3ff] tracking-tight text-center font-[var(--font-playfair)]">
             Academic Journey
           </h2>
           <div className="timeline-container relative">
@@ -1177,11 +1177,11 @@ export default function AlanHirschHero() {
               { year: "2016", title: "5Q Framework", desc: "Reactivating the original intelligence" },
             ].map((milestone, index) => (
               <div key={index} className="timeline-item mb-16 relative pl-16">
-                <div className="timeline-dot absolute left-0 top-2 w-4 h-4 bg-[#d4af37] rounded-full border-4 border-[#1a2332]" />
-                <div className="timeline-line absolute left-2 top-6 w-0.5 h-full bg-[#3a3a3a]" />
-                <div className="timeline-year text-3xl font-black text-[#d4af37] mb-2">{milestone.year}</div>
-                <h3 className="timeline-title text-2xl font-bold text-[#f5f5f0] mb-2">{milestone.title}</h3>
-                <p className="timeline-desc text-[#e8e8e0]">{milestone.desc}</p>
+                <div className="timeline-dot absolute left-0 top-2 w-4 h-4 bg-[#f0c36a] rounded-full border-4 border-[#130b24]" />
+                <div className="timeline-line absolute left-2 top-6 w-0.5 h-full bg-[#432659]" />
+                <div className="timeline-year text-3xl font-black text-[#f0c36a] mb-2">{milestone.year}</div>
+                <h3 className="timeline-title text-2xl font-bold text-[#f7f3ff] mb-2">{milestone.title}</h3>
+                <p className="timeline-desc text-[#e3d4ff]">{milestone.desc}</p>
               </div>
             ))}
           </div>
@@ -1189,9 +1189,9 @@ export default function AlanHirschHero() {
       </section>
 
       {/* Morphing/Transform Section */}
-      <section ref={morphingSectionRef} className="relative py-32 px-6 bg-[#2c3e50] overflow-hidden">
+      <section ref={morphingSectionRef} className="relative py-32 px-6 bg-[#221135] overflow-hidden">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-5xl md:text-6xl font-black mb-20 text-[#f5f5f0] tracking-tight text-center font-[var(--font-playfair)]">
+          <h2 className="text-5xl md:text-6xl font-black mb-20 text-[#f7f3ff] tracking-tight text-center font-[var(--font-playfair)]">
             Transformative Concepts
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -1200,10 +1200,10 @@ export default function AlanHirschHero() {
               { icon: "🌍", title: "Missional", desc: "Embedded in every aspect" },
               { icon: "🌱", title: "Organic", desc: "Authentic relationships" },
             ].map((concept, index) => (
-              <div key={index} className="morph-card bg-[#1a2332] border-2 border-[#3a3a3a] rounded-lg p-8 text-center cursor-pointer">
+              <div key={index} className="morph-card bg-[#130b24] border-2 border-[#432659] rounded-lg p-8 text-center cursor-pointer">
                 <div className="morph-icon text-6xl mb-4">{concept.icon}</div>
-                <h3 className="morph-title text-2xl font-bold text-[#f5f5f0] mb-2">{concept.title}</h3>
-                <p className="morph-desc text-[#e8e8e0]">{concept.desc}</p>
+                <h3 className="morph-title text-2xl font-bold text-[#f7f3ff] mb-2">{concept.title}</h3>
+                <p className="morph-desc text-[#e3d4ff]">{concept.desc}</p>
               </div>
             ))}
           </div>
@@ -1211,9 +1211,9 @@ export default function AlanHirschHero() {
       </section>
 
       {/* Number Counter Animation Section */}
-      <section ref={numbersSectionRef} className="relative py-32 px-6 bg-[#1a2332]">
+      <section ref={numbersSectionRef} className="relative py-32 px-6 bg-[#130b24]">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-5xl md:text-6xl font-black mb-20 text-[#f5f5f0] tracking-tight text-center font-[var(--font-playfair)]">
+          <h2 className="text-5xl md:text-6xl font-black mb-20 text-[#f7f3ff] tracking-tight text-center font-[var(--font-playfair)]">
             Impact by Numbers
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -1224,12 +1224,12 @@ export default function AlanHirschHero() {
               { number: 20, suffix: "+", label: "Years", prefix: "" },
             ].map((stat, index) => (
               <div key={index} className="number-stat text-center">
-                <div className="stat-number text-6xl font-black text-[#d4af37] mb-2">
+                <div className="stat-number text-6xl font-black text-[#f0c36a] mb-2">
                   <span className="stat-prefix">{stat.prefix}</span>
                   <span className="stat-value">0</span>
                   <span className="stat-suffix">{stat.suffix}</span>
                 </div>
-                <div className="stat-label text-[#e8e8e0] text-lg">{stat.label}</div>
+                <div className="stat-label text-[#e3d4ff] text-lg">{stat.label}</div>
               </div>
             ))}
           </div>
@@ -1237,9 +1237,9 @@ export default function AlanHirschHero() {
       </section>
 
       {/* Image Reveal Section */}
-      <section ref={imageRevealRef} className="relative py-32 px-6 bg-[#2c3e50]">
+      <section ref={imageRevealRef} className="relative py-32 px-6 bg-[#221135]">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-5xl md:text-6xl font-black mb-20 text-[#f5f5f0] tracking-tight text-center font-[var(--font-playfair)]">
+          <h2 className="text-5xl md:text-6xl font-black mb-20 text-[#f7f3ff] tracking-tight text-center font-[var(--font-playfair)]">
             Visual Legacy
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -1248,7 +1248,7 @@ export default function AlanHirschHero() {
               { src: "/alan/alan-candid-2.webp", title: "Collaboration", desc: "Working with thought leaders" },
             ].map((image, index) => (
               <div key={index} className="image-reveal-container relative overflow-hidden rounded-lg">
-                <div className="image-reveal-mask absolute inset-0 bg-[#1a2332] z-10" />
+                <div className="image-reveal-mask absolute inset-0 bg-[#130b24] z-10" />
                 <Image
                   src={image.src}
                   alt={image.title}
@@ -1256,9 +1256,9 @@ export default function AlanHirschHero() {
                   height={400}
                   className="image-reveal-image w-full h-full object-cover"
                 />
-                <div className="image-reveal-content absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-[#1a2332] to-transparent z-20">
-                  <h3 className="text-2xl font-bold text-[#f5f5f0] mb-2">{image.title}</h3>
-                  <p className="text-[#e8e8e0]">{image.desc}</p>
+                <div className="image-reveal-content absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-[#130b24] to-transparent z-20">
+                  <h3 className="text-2xl font-bold text-[#f7f3ff] mb-2">{image.title}</h3>
+                  <p className="text-[#e3d4ff]">{image.desc}</p>
                 </div>
               </div>
             ))}
@@ -1270,7 +1270,7 @@ export default function AlanHirschHero() {
       <div className="fixed top-6 left-6 z-50">
         <Link
           href="/"
-          className="gsap-button px-5 py-2.5 text-sm bg-[#2d2d2d] border-2 border-[#3a3a3a] rounded-lg hover:border-[#d4af37] hover:bg-[#3a3a3a] transition-colors text-[#f5f5f0] shadow-xl hover:shadow-2xl hover:shadow-[#d4af37]/20 font-medium block"
+          className="gsap-button px-5 py-2.5 text-sm bg-[#2a1538] border-2 border-[#432659] rounded-lg hover:border-[#f0c36a] hover:bg-[#432659] transition-colors text-[#f7f3ff] shadow-xl hover:shadow-2xl hover:shadow-[#f0c36a]/20 font-medium block"
         >
           ← Back to Game
         </Link>
