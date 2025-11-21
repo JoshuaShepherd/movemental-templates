@@ -292,6 +292,14 @@ export const styleSpecs: Record<string, StyleSpec> = {
       accent: "Geist Sans uppercase — metadata",
     },
   },
+  "alan-hirsch-hero-37": {
+    palette: ["#050505", "#FFFFFF", "#f9ff2b"],
+    typography: {
+      heading: "Geist Sans — heavy uppercase",
+      body: "Geist Sans — body copy",
+      accent: "Geist Sans uppercase — metadata",
+    },
+  },
   "brad-brisco-hero-1": {
     palette: ["#F6F6F3", "#050505", "#FFFFFF", "#0C0C0C"],
     typography: {

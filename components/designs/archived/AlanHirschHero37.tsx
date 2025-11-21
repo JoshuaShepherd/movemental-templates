@@ -47,7 +47,7 @@ const signalFeed = [
   { id: "sig-03", title: "AI agent flagged low contrast in hero variant B", time: "02:10", priority: "HIGH" },
 ]
 
-export default function AlanHirschHero() {
+export default function AlanHirschHero37() {
   const [activeFocus, setActiveFocus] = useState(focusTracks[0].id)
 
   const activeTrack = useMemo(
@@ -243,3 +243,4 @@ export default function AlanHirschHero() {
     </div>
   )
 }
+
