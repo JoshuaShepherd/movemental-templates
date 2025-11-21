@@ -54,7 +54,8 @@ export default function ArticlePrismNavigator() {
     if (activeFilter === "all") return catalog
     return catalog.filter((item) => item.filter === activeFilter)
   }, [activeFilter])
-  const active = catalog.find((item) => item.id === selectedId) ?? catalog[0]
+  const activeEntry = catalog.find((item) => item.id === selectedId) ?? catalog[0]
+  const activeFilterLabel = filters.find((filter) => filter.value === activeEntry.filter)?.label ?? "Entry"
 
   return (
     <div className="min-h-screen bg-[#fdfcf9] text-gray-900">
@@ -105,8 +106,8 @@ export default function ArticlePrismNavigator() {
 
           <article className="lg:col-span-3 rounded-[36px] border border-gray-200 bg-white shadow-xl p-8 space-y-6">
             <div>
-              <p className="text-[10px] uppercase tracking-[0.6em] text-rose-500">Think piece</p>
-              <h2 className="text-4xl font-[var(--font-playfair)] text-gray-900">Think Grid: Unbundling the Seminary</h2>
+              <p className="text-[10px] uppercase tracking-[0.6em] text-rose-500">{activeFilterLabel}</p>
+              <h2 className="text-4xl font-[var(--font-playfair)] text-gray-900">{activeEntry.title}</h2>
               <p className="text-sm text-gray-500">By Jordan Castillo · 17 min read</p>
             </div>
 

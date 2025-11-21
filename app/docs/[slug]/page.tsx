@@ -8,9 +8,7 @@ const repoRoot = path.resolve(process.cwd(), "..");
 const docsRoot = path.join(repoRoot, "_docs");
 const githubBase = "https://github.com/joshshepherd/movemental/tree/main/_docs";
 
-marked.use({ mangle: false, headerIds: true });
-
-type Params = { slug: string };
+type Params = { slug?: string };
 
 type FileEntry = {
   name: string;
@@ -39,7 +37,11 @@ function listEntries(dir: string, slug: string): FileEntry[] {
     .sort((a, b) => a.name.localeCompare(b.name));
 }
 
-function readReadme(slug: string) {
+function readReadme(slug: string | undefined) {
+  if (!slug || typeof slug !== "string") {
+    return null;
+  }
+
   const pillarDir = path.join(docsRoot, slug);
   if (!fs.existsSync(pillarDir) || !fs.statSync(pillarDir).isDirectory()) {
     return null;
@@ -72,7 +74,8 @@ export function generateStaticParams() {
 }
 
 export default function PillarPage({ params }: { params: Params }) {
-  const data = readReadme(params.slug);
+  const slug = typeof params?.slug === "string" ? params.slug : undefined;
+  const data = readReadme(slug);
 
   if (!data) {
     notFound();

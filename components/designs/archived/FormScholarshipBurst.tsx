@@ -6,6 +6,16 @@ const steps = ["Profile", "Essay", "Budget", "Review"]
 
 export default function FormScholarshipBurst() {
   const [currentStep, setCurrentStep] = useState(2)
+  const isFirstStep = currentStep === 0
+  const isLastStep = currentStep === steps.length - 1
+
+  const handlePrevious = () => {
+    setCurrentStep((prev) => Math.max(0, prev - 1))
+  }
+
+  const handleNext = () => {
+    setCurrentStep((prev) => Math.min(steps.length - 1, prev + 1))
+  }
 
   return (
     <div className="min-h-screen bg-[#fef7fb] text-rose-900">
@@ -71,10 +81,24 @@ export default function FormScholarshipBurst() {
           </div>
 
           <div className="flex justify-between items-center">
-            <button className="text-rose-500 underline">Back</button>
+            <button
+              className={`text-rose-500 underline transition-opacity ${isFirstStep ? "opacity-40 cursor-not-allowed" : ""}`}
+              onClick={handlePrevious}
+              disabled={isFirstStep}
+            >
+              Back
+            </button>
             <div className="space-x-3">
               <button className="px-5 py-2 rounded-full border border-rose-200 text-rose-600">Save</button>
-              <button className="px-6 py-2 rounded-full bg-rose-500 text-white font-semibold">Next step</button>
+              <button
+                className={`px-6 py-2 rounded-full bg-rose-500 text-white font-semibold transition-opacity ${
+                  isLastStep ? "opacity-40 cursor-not-allowed" : ""
+                }`}
+                onClick={handleNext}
+                disabled={isLastStep}
+              >
+                {isLastStep ? "Review" : "Next step"}
+              </button>
             </div>
           </div>
         </section>
