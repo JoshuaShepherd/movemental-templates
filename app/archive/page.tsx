@@ -4,6 +4,7 @@ import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
 import { useMemo, useState } from "react"
 import { archivedDesigns, type ArchivedDesign } from "./designData"
+import { styleSpecs, type StyleSpec } from "./styleSpecs"
 
 const typeOrder = [
   "Hero Experiences",
@@ -58,8 +59,28 @@ const movementDescriptions: Record<string, string> = {
   "Agentic UI": "Agent consoles, summon panels, and workflow builders that choreograph hybrid human+AI teams.",
 }
 
-const getPalette = (type: string) => palettePresets[type] ?? palettePresets.default
-const getTypography = (type: string) => typographyPresets[type] ?? typographyPresets.default
+const defaultStyleSpec: StyleSpec = {
+  palette: palettePresets.default,
+  typography: typographyPresets.default,
+}
+
+const getPalette = (type: string) => palettePresets[type] ?? defaultStyleSpec.palette
+const getTypography = (type: string) => typographyPresets[type] ?? defaultStyleSpec.typography
+
+const getStyleSpec = (design: ArchivedDesign): StyleSpec => {
+  const spec = styleSpecs[design.id]
+  if (spec) {
+    return {
+      palette: spec.palette.length ? spec.palette : getPalette(design.type),
+      typography: spec.typography ?? getTypography(design.type),
+    }
+  }
+
+  return {
+    palette: getPalette(design.type),
+    typography: getTypography(design.type),
+  }
+}
 
 const getContrastColor = (hex: string) => {
   const normalized = hex.replace("#", "")
@@ -76,6 +97,8 @@ const keywordsForDesign = (design: ArchivedDesign) => [design.movement, design.c
 const typeFilters = ["All", ...typeOrder]
 const movementFilters = ["All", ...new Set(archivedDesigns.map((design) => design.movement))]
 
+type ViewMode = "card" | "list"
+
 export default function ArchivePage() {
   const [activeType, setActiveType] = useState("All")
   const [movementFilter, setMovementFilter] = useState("All")
@@ -83,6 +106,13 @@ export default function ArchivePage() {
   const [search, setSearch] = useState("")
   const [selectedDesign, setSelectedDesign] = useState<ArchivedDesign | null>(null)
   const [previewId, setPreviewId] = useState<string | null>(null)
+  const [viewMode, setViewMode] = useState<ViewMode>("card")
+  const [collapsedTypes, setCollapsedTypes] = useState<Record<string, boolean>>(() =>
+    typeOrder.reduce((acc, type) => {
+      acc[type] = true
+      return acc
+    }, {} as Record<string, boolean>)
+  )
 
   const filteredDesigns = useMemo(() => {
     const query = search.trim().toLowerCase()
@@ -213,6 +243,29 @@ export default function ArchivePage() {
             >
               Reset filters
             </button>
+            <span>•</span>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setViewMode("card")}
+                className={`px-3 py-1 rounded-full border text-[10px] ${
+                  viewMode === "card"
+                    ? "border-gray-900 bg-gray-900 text-white"
+                    : "border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300"
+                }`}
+              >
+                Card
+              </button>
+              <button
+                onClick={() => setViewMode("list")}
+                className={`px-3 py-1 rounded-full border text-[10px] ${
+                  viewMode === "list"
+                    ? "border-gray-900 bg-gray-900 text-white"
+                    : "border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300"
+                }`}
+              >
+                List
+              </button>
+            </div>
           </div>
         </div>
 
@@ -249,79 +302,135 @@ export default function ArchivePage() {
                       <div className="text-sm text-gray-600 dark:text-gray-300 max-w-md">
                         {movementDescriptions[type] ?? "Curated study in applied design systems."}
                       </div>
-                      <span className="px-4 py-2 rounded-full text-[10px] font-semibold tracking-[0.4em] uppercase border border-gray-200 dark:border-gray-700">
-                        {designs.length} pieces
-                      </span>
+                      <div className="flex items-center gap-3">
+                        <span className="px-4 py-2 rounded-full text-[10px] font-semibold tracking-[0.4em] uppercase border border-gray-200 dark:border-gray-700">
+                          {designs.length} pieces
+                        </span>
+                        <button
+                          onClick={() =>
+                            setCollapsedTypes((prev) => ({
+                              ...prev,
+                              [type]: !prev[type],
+                            }))
+                          }
+                          className="text-[10px] uppercase tracking-[0.4em] text-gray-600 dark:text-gray-300 underline"
+                        >
+                          {collapsedTypes[type] ? "Expand" : "Collapse"}
+                        </button>
+                      </div>
                     </div>
 
-                    <div className="grid md:grid-cols-2 gap-7">
+                    {!collapsedTypes[type] && (
+                      <div className={viewMode === "card" ? "grid md:grid-cols-2 gap-7" : "space-y-4"}>
                       {designs.map((design) => {
                         const cardId = `#${design.order.toString().padStart(3, "0")}`
-                        const palette = getPalette(design.type)
+                        const styleSpec = getStyleSpec(design)
                         return (
                           <article
                             key={design.id}
-                            className="relative border border-gray-200 dark:border-gray-800 rounded-[30px] p-6 bg-white/90 dark:bg-gray-950/70 shadow-[0_20px_60px_-50px_rgba(15,23,42,0.9)]"
+                            className={`relative border border-gray-200 dark:border-gray-800 rounded-[30px] p-6 bg-white/90 dark:bg-gray-950/70 shadow-[0_20px_60px_-50px_rgba(15,23,42,0.9)] ${
+                              viewMode === "list" ? "flex flex-col gap-5" : ""
+                            }`}
                           >
-                            <div className="flex items-center justify-between text-[10px] uppercase tracking-[0.5em] text-gray-500 dark:text-gray-400 mb-4">
-                              <span>{cardId}</span>
-                              <span>{design.year}</span>
-                            </div>
-                            <h3 className="text-2xl font-semibold font-[var(--font-playfair)] text-gray-900 dark:text-gray-100">
-                              {design.name}
-                            </h3>
-                            <p className="text-sm text-gray-600 dark:text-gray-300 mt-2">{design.style}</p>
-                            <p className="text-[10px] uppercase tracking-[0.4em] text-gray-500 dark:text-gray-400 mt-3">
-                              {design.movement} · {design.content}
-                            </p>
+                            <div
+                              className={`space-y-4 ${viewMode === "list" ? "lg:flex lg:items-center lg:gap-6" : ""}`}
+                            >
+                              <div className={`space-y-3 min-w-0 ${viewMode === "list" ? "flex-1" : ""}`}>
+                                <div className="flex items-center justify-between text-[10px] uppercase tracking-[0.5em] text-gray-500 dark:text-gray-400">
+                                  <span>{cardId}</span>
+                                  <span>{design.year}</span>
+                                </div>
+                                <div className="space-y-2 min-w-0">
+                                  <h3 className="text-2xl font-semibold font-[var(--font-playfair)] text-gray-900 dark:text-gray-100 break-words">
+                                    {design.name}
+                                  </h3>
+                                  <p className="text-sm text-gray-600 dark:text-gray-300 break-words">{design.style}</p>
+                                  <p className="text-[10px] uppercase tracking-[0.4em] text-gray-500 dark:text-gray-400 break-words">
+                                    {design.movement} · {design.content}
+                                  </p>
+                                </div>
 
-                            <div className="flex flex-wrap gap-2 mt-4">
-                              {design.tags.map((tag) => (
-                                <span
-                                  key={tag}
-                                  className="px-3 py-1 rounded-full text-[11px] font-medium bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100"
-                                >
-                                  {tag}
-                                </span>
-                              ))}
+                                <div className="flex flex-wrap gap-2">
+                                  {design.tags.map((tag) => (
+                                    <span
+                                      key={tag}
+                                      className="px-3 py-1 rounded-full text-[11px] font-medium bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100"
+                                    >
+                                      {tag}
+                                    </span>
+                                  ))}
+                                </div>
+
+                                <div className="flex items-center gap-2">
+                                  {styleSpec.palette.slice(0, 4).map((color) => (
+                                    <span
+                                      key={`${design.id}-${color}`}
+                                      className="flex-1 h-1.5 rounded-full"
+                                      style={{ backgroundColor: color }}
+                                    />
+                                  ))}
+                                </div>
+                              </div>
+
+                              {viewMode === "list" && (
+                                <div className="flex flex-col gap-4 flex-shrink-0 min-w-[220px]">
+                                  <div className="grid grid-cols-2 gap-3 text-[11px] uppercase tracking-[0.3em] text-gray-600 dark:text-gray-300">
+                                    <button
+                                      onClick={() => setSelectedDesign(design)}
+                                      className="col-span-2 border border-gray-300 dark:border-gray-700 rounded-full py-2 hover:bg-gray-900 hover:text-white dark:hover:bg-white/10 transition-colors"
+                                    >
+                                      Style dossier
+                                    </button>
+                                    <button
+                                      onClick={() => setPreviewId((prev) => (prev === design.id ? null : design.id))}
+                                      className="col-span-2 border border-dashed border-gray-400 dark:border-gray-600 rounded-full py-2 lowercase tracking-[0.4em] text-gray-500 dark:text-gray-400 hover:border-gray-900 dark:hover:border-gray-200"
+                                    >
+                                      highlight preview
+                                    </button>
+                                  </div>
+                                  <div className="flex items-center gap-3 text-[11px] uppercase tracking-[0.4em] text-gray-500 dark:text-gray-400">
+                                    <Link
+                                      href={`/archive/${design.id}`}
+                                      className="px-4 py-2 rounded-full border border-gray-900 text-gray-900 dark:border-gray-100 dark:text-gray-100 hover:bg-gray-900 hover:text-white dark:hover:bg-gray-100 dark:hover:text-gray-900 transition-colors"
+                                    >
+                                      Launch template
+                                    </Link>
+                                    <span>Score {design.score}%</span>
+                                  </div>
+                                </div>
+                              )}
                             </div>
 
-                            <div className="flex items-center gap-2 mt-5">
-                              {palette.slice(0, 4).map((color) => (
-                                <span
-                                  key={`${design.id}-${color}`}
-                                  className="flex-1 h-1.5 rounded-full"
-                                  style={{ backgroundColor: color }}
-                                />
-                              ))}
-                            </div>
+                            {viewMode === "card" && (
+                              <>
+                                <div className="grid grid-cols-3 gap-3 mt-6 text-[11px] uppercase tracking-[0.3em] text-gray-600 dark:text-gray-300">
+                                  <button
+                                    onClick={() => setSelectedDesign(design)}
+                                    className="col-span-2 border border-gray-300 dark:border-gray-700 rounded-full py-2 hover:bg-gray-900 hover:text-white dark:hover:bg-white/10 transition-colors"
+                                  >
+                                    Style dossier
+                                  </button>
+                                  <button
+                                    onClick={() => setPreviewId((prev) => (prev === design.id ? null : design.id))}
+                                    className="border border-dashed border-gray-400 dark:border-gray-600 rounded-full py-2 lowercase tracking-[0.4em] text-gray-500 dark:text-gray-400 hover:border-gray-900 dark:hover:border-gray-200"
+                                  >
+                                    highlight preview
+                                  </button>
+                                </div>
 
-                            <div className="grid grid-cols-3 gap-3 mt-6 text-[11px] uppercase tracking-[0.3em] text-gray-600 dark:text-gray-300">
-                              <button
-                                onClick={() => setSelectedDesign(design)}
-                                className="col-span-2 border border-gray-300 dark:border-gray-700 rounded-full py-2 hover:bg-gray-900 hover:text-white dark:hover:bg-white/10 transition-colors"
-                              >
-                                Style dossier
-                              </button>
-                              <button
-                                onClick={() => setPreviewId((prev) => (prev === design.id ? null : design.id))}
-                                className="border border-dashed border-gray-400 dark:border-gray-600 rounded-full py-2 lowercase tracking-[0.4em] text-gray-500 dark:text-gray-400 hover:border-gray-900 dark:hover:border-gray-200"
-                              >
-                                highlight preview
-                              </button>
-                            </div>
-
-                            <div className="mt-6 flex flex-wrap gap-3 text-sm font-medium">
-                              <Link
-                                href={`/archive/${design.id}`}
-                                className="px-4 py-2 rounded-full border border-gray-900 text-gray-900 dark:border-gray-100 dark:text-gray-100 hover:bg-gray-900 hover:text-white dark:hover:bg-gray-100 dark:hover:text-gray-900 transition-colors text-[11px] uppercase tracking-[0.3em]"
-                              >
-                                Launch template
-                              </Link>
-                              <span className="text-[11px] uppercase tracking-[0.4em] text-gray-500 dark:text-gray-400">
-                                Score {design.score}%
-                              </span>
-                            </div>
+                                <div className="mt-6 flex flex-wrap gap-3 text-sm font-medium">
+                                  <Link
+                                    href={`/archive/${design.id}`}
+                                    className="px-4 py-2 rounded-full border border-gray-900 text-gray-900 dark:border-gray-100 dark:text-gray-100 hover:bg-gray-900 hover:text-white dark:hover:bg-gray-100 dark:hover:text-gray-900 transition-colors text-[11px] uppercase tracking-[0.3em]"
+                                  >
+                                    Launch template
+                                  </Link>
+                                  <span className="text-[11px] uppercase tracking-[0.4em] text-gray-500 dark:text-gray-400">
+                                    Score {design.score}%
+                                  </span>
+                                </div>
+                              </>
+                            )}
 
                             {previewId === design.id && (
                               <WindowedPreview design={design} onClose={() => setPreviewId(null)} />
@@ -329,7 +438,8 @@ export default function ArchivePage() {
                           </article>
                         )
                       })}
-                    </div>
+                      </div>
+                    )}
                   </div>
                 </motion.section>
               )
@@ -384,8 +494,7 @@ function WindowedPreview({ design, onClose }: { design: ArchivedDesign; onClose:
 }
 
 function DesignModal({ design, onClose }: { design: ArchivedDesign; onClose: () => void }) {
-  const palette = getPalette(design.type)
-  const typography = getTypography(design.type)
+  const { palette, typography } = getStyleSpec(design)
 
   return (
     <motion.div

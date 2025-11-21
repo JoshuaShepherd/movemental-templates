@@ -1,10 +1,10 @@
 import type { ReactNode } from "react"
-import { FloatingArchiveBreadcrumb } from "@/components/archive/FloatingArchiveBreadcrumb"
+import FloatingArchiveNav from "@/components/archive/FloatingArchiveNav"
 
 export default function ArchiveLayout({ children }: { children: ReactNode }) {
   return (
     <div className="relative">
-      <FloatingArchiveBreadcrumb />
+      <FloatingArchiveNav />
       {children}
     </div>
   )
