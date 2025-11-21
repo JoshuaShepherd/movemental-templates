@@ -412,6 +412,14 @@ export const styleSpecs: Record<string, StyleSpec> = {
       accent: "Space Mono — uppercase metadata",
     },
   },
+  "dashboard-scout-horizon-content": {
+    palette: ["#f7f5ef", "#ffffff", "#0f172a", "#c18f4a"],
+    typography: {
+      heading: "Neue Montreal — command headings",
+      body: "Inter — Scout Horizon body",
+      accent: "Space Mono — metadata rails",
+    },
+  },
   "dashboard-lumen-arc": {
     palette: ["#030712", "#0a1328", "#6bd9ff", "#ffffff"],
     typography: {

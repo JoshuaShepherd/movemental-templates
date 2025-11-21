@@ -216,7 +216,9 @@ export default function AmpCredDeckSpectralShowcase() {
             {slides.map((slide, index) => (
               <div
                 key={slide.id}
-                ref={(el) => (slideRefs.current[index] = el)}
+                ref={(el) => {
+                  slideRefs.current[index] = el
+                }}
                 className={`absolute inset-0 rounded-[32px] border border-white/20 bg-white/10 backdrop-blur-xl p-8 md:p-10 shadow-[0_60px_140px_-90px_rgba(15,23,42,0.9)] transition-opacity duration-500 ${
                   index === activeIndex ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
                 }`}
