@@ -372,4 +372,108 @@ export const styleSpecs: Record<string, StyleSpec> = {
       accent: "Geist Sans uppercase — metadata",
     },
   },
+  "dashboard-icon-rail-studio": {
+    palette: ["#f7f5f1", "#ffffff", "#111111", "#d6d0c4"],
+    typography: {
+      heading: "Neue Montreal — bold headings",
+      body: "Inter — clean body copy",
+      accent: "Maison Mono — metadata",
+    },
+  },
+  "dashboard-signal-lattice": {
+    palette: ["#01030a", "#07112a", "#0f172a", "#4cc9f0"],
+    typography: {
+      heading: "Söhne — cinematic sans",
+      body: "Inter — systems copy",
+      accent: "Space Mono — uppercase metadata",
+    },
+  },
+  "dashboard-orbit-pane": {
+    palette: ["#f4f0ff", "#ffffff", "#0f172a", "#94a3b8"],
+    typography: {
+      heading: "Canela — refined serif",
+      body: "Inter — soft sans",
+      accent: "Space Grotesk — uppercase metadata",
+    },
+  },
+  "dashboard-glyph-ledger": {
+    palette: ["#03060f", "#0c1224", "#58c5ff", "#f5f5f5"],
+    typography: {
+      heading: "Söhne — cinematic sans",
+      body: "Inter — systems copy",
+      accent: "Maison Mono — metadata",
+    },
+  },
+  "dashboard-scout-horizon": {
+    palette: ["#f7f5ef", "#ffffff", "#111111", "#d4b483"],
+    typography: {
+      heading: "Neue Montreal — bold",
+      body: "Inter — clean body copy",
+      accent: "Space Mono — uppercase metadata",
+    },
+  },
+  "dashboard-lumen-arc": {
+    palette: ["#030712", "#0a1328", "#6bd9ff", "#ffffff"],
+    typography: {
+      heading: "Suisse Intl — heavy",
+      body: "Inter — body copy",
+      accent: "Maison Mono — metadata",
+    },
+  },
+  "ampcred-deck-celestial-codex": {
+    palette: ["#010409", "#050b16", "#0d1529", "#9ec5ff"],
+    typography: {
+      heading: "Playfair Display — illuminated serif",
+      body: "Geist Sans — legible narrative body",
+      accent: "Space Mono — telemetry ribbon",
+    },
+  },
+  "ampcred-deck-observatory-ledger": {
+    palette: ["#fdfaf3", "#f6f0e4", "#efe7d7", "#0f172a"],
+    typography: {
+      heading: "Canela — academic display",
+      body: "Inter — research prose",
+      accent: "Maison Mono — marginalia metadata",
+    },
+  },
+  "ampcred-deck-chorale-canticle": {
+    palette: ["#0a0a0a", "#1b0f1f", "#120a24", "#c5a3ff"],
+    typography: {
+      heading: "Playfair Display — lyrical serif",
+      body: "Geist Sans — contemporary narrative",
+      accent: "Space Mono — score annotations",
+    },
+  },
+  "ampcred-deck-spectral-showcase": {
+    palette: ["#03050d", "#0b1632", "#0f1f3f", "#8b5cf6"],
+    typography: {
+      heading: "Neue Montreal — cinematic sans",
+      body: "Inter — presentation body",
+      accent: "Space Mono — metadata rails",
+    },
+  },
+  "ampcred-admin-chronicle": {
+    palette: ["#05060c", "#0c1627", "#09152b", "#7dd3fc"],
+    typography: {
+      heading: "Söhne — admin hero",
+      body: "Inter — systems copy",
+      accent: "Space Mono — metadata",
+    },
+  },
+  "ampcred-admin-helix": {
+    palette: ["#070d12", "#152126", "#0a1016", "#facc15"],
+    typography: {
+      heading: "Neue Montreal — bold",
+      body: "Inter — clean body",
+      accent: "Maison Mono — rail metadata",
+    },
+  },
+  "ampcred-admin-sierra": {
+    palette: ["#0c0b15", "#150f26", "#070414", "#c084fc"],
+    typography: {
+      heading: "Canela — refined display",
+      body: "Inter — admin prose",
+      accent: "Space Mono — chip text",
+    },
+  },
 }

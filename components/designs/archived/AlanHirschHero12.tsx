@@ -1,8 +1,7 @@
 "use client"
 
-import Image from "next/image"
 import { motion, AnimatePresence } from "framer-motion"
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 
@@ -94,10 +93,24 @@ const eventTypeLabels = {
   residency: "Residency",
 }
 
+const docsLibrary = [
+  { id: "doc-1", title: "Movement Leader OS Charter", type: "Strategy", updated: "2 days ago", tags: ["PDF", "Deck"] },
+  { id: "doc-2", title: "Calendar Patterns v3", type: "Systems", updated: "4 days ago", tags: ["Spec"] },
+  { id: "doc-3", title: "Residency Intake SOP", type: "Operations", updated: "1 day ago", tags: ["SOP"] },
+  { id: "doc-4", title: "AI Guardrail Toolkit", type: "AI", updated: "6 hours ago", tags: ["Toolkit"] },
+  { id: "doc-5", title: "Docs Taxonomy", type: "Knowledge", updated: "5 days ago", tags: ["Schema"] },
+]
+
+const requestTags = ["Residency", "Calendar", "AI", "Docs"]
+
 export default function AlanHirschHero() {
   const [view, setView] = useState<CalendarView>("month")
   const [currentDate, setCurrentDate] = useState(new Date())
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
+  const [showEventModal, setShowEventModal] = useState(false)
+  const [docQuery, setDocQuery] = useState("")
+  const [docSort, setDocSort] = useState<"recent" | "alpha">("recent")
+  const [formTag, setFormTag] = useState(requestTags[0])
 
   const month = currentDate.getMonth()
   const year = currentDate.getFullYear()
@@ -146,6 +159,16 @@ export default function AlanHirschHero() {
     .filter((event) => event.date >= new Date())
     .sort((a, b) => a.date.getTime() - b.date.getTime())
     .slice(0, 5)
+
+  const filteredDocs = useMemo(() => {
+    const query = docQuery.trim().toLowerCase()
+    const sorted = [...docsLibrary]
+    sorted.sort((a, b) => {
+      if (docSort === "alpha") return a.title.localeCompare(b.title)
+      return b.updated.localeCompare(a.updated)
+    })
+    return sorted.filter((doc) => doc.title.toLowerCase().includes(query) || doc.type.toLowerCase().includes(query))
+  }, [docQuery, docSort])
 
   const renderMonthView = () => {
     const days = []
@@ -336,20 +359,121 @@ export default function AlanHirschHero() {
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="relative"
+              className="relative rounded-3xl border border-white/20 bg-white/5 p-8 space-y-6"
             >
-              <div className="absolute -inset-4 bg-purple-500/20 blur-3xl" />
-              <div className="relative rounded-3xl overflow-hidden border border-white/20">
-                <Image
-                  src="/alan/alan-headshot-4x5.webp"
-                  alt="Alan Hirsch"
-                  width={600}
-                  height={800}
-                  className="w-full h-auto object-cover"
-                  priority
-                />
+              <div className="flex flex-wrap gap-4">
+                <div className="flex-1">
+                  <p className="text-xs uppercase tracking-[0.5em] text-purple-200">AmpCred</p>
+                  <p className="text-4xl font-black text-white mt-2">820</p>
+                </div>
+                <div className="flex-1">
+                  <p className="text-xs uppercase tracking-[0.5em] text-purple-200">Leaders linked</p>
+                  <p className="text-4xl font-black text-white mt-2">100+</p>
+                </div>
+                <div className="flex-1">
+                  <p className="text-xs uppercase tracking-[0.5em] text-purple-200">Docs indexed</p>
+                  <p className="text-4xl font-black text-white mt-2">312</p>
+                </div>
               </div>
+              <div className="grid grid-cols-2 gap-3">
+                {["Calendar lattice", "Residency OS", "AI guardrails", "Docs taxonomy"].map((chip) => (
+                  <div key={chip} className="rounded-2xl border border-white/15 px-4 py-3 text-sm text-purple-100 bg-white/5">
+                    {chip}
+                  </div>
+                ))}
+              </div>
+              <p className="text-sm text-purple-100">
+                Hero telemetry replaces portraits so admin teams jump straight into schedules, forms, and documentation without losing time.
+                Metrics update live as new events or docs publish.
+              </p>
             </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Custom Form + Docs */}
+      <section className="px-6 py-20 bg-black/30">
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-8">
+          <div className="rounded-[32px] border border-white/15 bg-white/5 p-8 space-y-5">
+            <div className="flex items-center justify-between text-xs uppercase tracking-[0.5em] text-purple-200">
+              <span>Custom request form</span>
+              <span>UI components</span>
+            </div>
+            <input
+              type="text"
+              placeholder="Request title"
+              className="w-full rounded-2xl border border-white/20 bg-white/10 px-4 py-3 text-white placeholder-purple-200/60"
+            />
+            <div className="flex flex-wrap gap-2">
+              {requestTags.map((tag) => (
+                <button
+                  key={tag}
+                  onClick={() => setFormTag(tag)}
+                  className={`px-4 py-2 rounded-full border text-sm ${
+                    formTag === tag ? "bg-white text-gray-900 border-white" : "border-white/20 text-purple-100"
+                  }`}
+                >
+                  {tag}
+                </button>
+              ))}
+            </div>
+            <div className="grid sm:grid-cols-2 gap-4">
+              <select className="rounded-2xl border border-white/20 bg-white/10 px-4 py-3 text-white">
+                <option>Critical</option>
+                <option>High</option>
+                <option>Standard</option>
+              </select>
+              <input type="date" className="rounded-2xl border border-white/20 bg-white/10 px-4 py-3 text-white" />
+            </div>
+            <textarea
+              rows={4}
+              placeholder="Describe the request, context, and desired outcomes…"
+              className="w-full rounded-2xl border border-white/20 bg-white/10 px-4 py-3 text-white placeholder-purple-200/60"
+            />
+            <div className="flex flex-wrap gap-3">
+              <button className="px-5 py-3 rounded-2xl border border-white text-gray-900 bg-white font-semibold">Submit</button>
+              <button className="px-5 py-3 rounded-2xl border border-white/30 text-purple-100">Save draft</button>
+            </div>
+          </div>
+          <div className="rounded-[32px] border border-white/15 bg-white/5 p-8 space-y-5">
+            <div className="flex flex-wrap items-center gap-3 text-xs uppercase tracking-[0.5em] text-purple-200">
+              <span>Documentation vault</span>
+              <span>Sortable · Searchable</span>
+            </div>
+            <div className="grid sm:grid-cols-2 gap-4">
+              <input
+                value={docQuery}
+                onChange={(e) => setDocQuery(e.target.value)}
+                placeholder="Search docs"
+                className="rounded-2xl border border-white/20 bg-white/10 px-4 py-3 text-white placeholder-purple-200/60"
+              />
+              <select
+                value={docSort}
+                onChange={(e) => setDocSort(e.target.value as "recent" | "alpha")}
+                className="rounded-2xl border border-white/20 bg-white/10 px-4 py-3 text-white"
+              >
+                <option value="recent">Sort · Most recent</option>
+                <option value="alpha">Sort · A-Z</option>
+              </select>
+            </div>
+            <div className="space-y-3 max-h-[360px] overflow-y-auto pr-2">
+              {filteredDocs.map((doc) => (
+                <div key={doc.id} className="border border-white/10 rounded-2xl p-4 bg-[#1c1230]/70">
+                  <div className="flex items-center justify-between">
+                    <p className="text-lg font-semibold text-white">{doc.title}</p>
+                    <span className="text-xs text-purple-200">{doc.updated}</span>
+                  </div>
+                  <p className="text-xs text-purple-200/80 mt-1">{doc.type}</p>
+                  <div className="flex flex-wrap gap-2 mt-3">
+                    {doc.tags.map((tag) => (
+                      <span key={tag} className="text-xs px-3 py-1 rounded-full border border-white/15 text-purple-100">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -369,20 +493,28 @@ export default function AlanHirschHero() {
                 <h2 className="text-5xl md:text-6xl font-black mb-4">Schedule</h2>
                 <p className="text-purple-200">Upcoming events and engagements</p>
               </div>
-              <div className="flex gap-2 bg-white/5 p-1 rounded-full border border-white/10">
-                {(["month", "week", "agenda"] as CalendarView[]).map((v) => (
-                  <button
-                    key={v}
-                    onClick={() => setView(v)}
-                    className={`px-6 py-2 rounded-full text-sm font-semibold transition-all capitalize ${
-                      view === v
-                        ? "bg-purple-500 text-white"
-                        : "text-white/60 hover:text-white"
-                    }`}
-                  >
-                    {v}
-                  </button>
-                ))}
+              <div className="flex flex-wrap gap-3 items-center">
+                <div className="flex gap-2 bg-white/5 p-1 rounded-full border border-white/10">
+                  {(["month", "week", "agenda"] as CalendarView[]).map((v) => (
+                    <button
+                      key={v}
+                      onClick={() => setView(v)}
+                      className={`px-6 py-2 rounded-full text-sm font-semibold transition-all capitalize ${
+                        view === v
+                          ? "bg-purple-500 text-white"
+                          : "text-white/60 hover:text-white"
+                      }`}
+                    >
+                      {v}
+                    </button>
+                  ))}
+                </div>
+                <Button
+                  onClick={() => setShowEventModal(true)}
+                  className="px-5 py-2 h-auto rounded-full bg-white/10 border border-white/30 text-sm hover:bg-white/20"
+                >
+                  Add calendar item
+                </Button>
               </div>
             </div>
 
@@ -498,6 +630,44 @@ export default function AlanHirschHero() {
           ← Back to Game
         </Link>
       </div>
+
+      {showEventModal && (
+        <div className="fixed inset-0 bg-black/70 backdrop-blur flex items-center justify-center z-50 px-4">
+          <div className="max-w-lg w-full rounded-[32px] border border-white/20 bg-[#050512] p-6 space-y-4">
+            <div className="flex items-center justify-between">
+              <p className="text-xs uppercase tracking-[0.5em] text-purple-200">New calendar entry</p>
+              <button onClick={() => setShowEventModal(false)} className="text-sm text-purple-200 hover:text-white">
+                Close
+              </button>
+            </div>
+            <input
+              type="text"
+              placeholder="Event title"
+              className="w-full rounded-2xl border border-white/20 bg-white/10 px-4 py-3 text-white placeholder-purple-200/60"
+            />
+            <div className="grid grid-cols-2 gap-3">
+              <input type="date" className="rounded-2xl border border-white/20 bg-white/10 px-4 py-3 text-white" />
+              <input type="time" className="rounded-2xl border border-white/20 bg-white/10 px-4 py-3 text-white" />
+            </div>
+            <select className="w-full rounded-2xl border border-white/20 bg-white/10 px-4 py-3 text-white">
+              {Object.keys(eventTypeLabels).map((key) => (
+                <option key={key}>{eventTypeLabels[key as keyof typeof eventTypeLabels]}</option>
+              ))}
+            </select>
+            <textarea
+              rows={3}
+              placeholder="Details, links, presenters..."
+              className="w-full rounded-2xl border border-white/20 bg-white/10 px-4 py-3 text-white placeholder-purple-200/60"
+            />
+            <div className="flex gap-3 pt-2">
+              <button className="flex-1 rounded-2xl border border-white text-gray-900 bg-white px-4 py-3 font-semibold">Save event</button>
+              <button onClick={() => setShowEventModal(false)} className="rounded-2xl border border-white/20 px-4 py-3 text-purple-100">
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
