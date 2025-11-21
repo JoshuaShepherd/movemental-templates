@@ -3,543 +3,7 @@
 import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
 import { useMemo, useState } from "react"
-
-type ArchivedDesign = {
-  id: string
-  name: string
-  style: string
-  content: string
-  date: string
-  year: number
-  score: number
-  type: string
-  movement: string
-  tags: string[]
-  order: number
-}
-
-const archivedDesigns: ArchivedDesign[] = [
-  {
-    id: "alan-hirsch-hero-1",
-    name: "Alan Hirsch - Content-First Minimalism",
-    style: "Content-First Minimalism with Hero Image",
-    content: "Alan Hirsch Hero Section",
-    date: "2024",
-    year: 2024,
-    score: 88,
-    type: "Hero Experiences",
-    movement: "Content-First Minimalism",
-    tags: ["Hero", "Minimal", "Content-first"],
-    order: 1,
-  },
-  {
-    id: "alan-hirsch-hero-2",
-    name: "Alan Hirsch - Bold Typography & Editorial",
-    style: "Bold Typography with Editorial Layout & Gradient Accents",
-    content: "Alan Hirsch Hero Section",
-    date: "2024",
-    year: 2024,
-    score: 90,
-    type: "Editorial & Narrative",
-    movement: "Bold Editorial Typography",
-    tags: ["Editorial", "Serif", "Gradient"],
-    order: 2,
-  },
-  {
-    id: "alan-hirsch-hero-3",
-    name: "Alan Hirsch - Glassmorphism",
-    style: "Subtle Glassmorphism with Asymmetric Layouts",
-    content: "Alan Hirsch Hero Section",
-    date: "2024",
-    year: 2024,
-    score: 92,
-    type: "Hero Experiences",
-    movement: "Glassmorphism Hero",
-    tags: ["Glass", "Hero", "Asymmetric"],
-    order: 3,
-  },
-  {
-    id: "alan-hirsch-hero-4",
-    name: "Alan Hirsch - Dark High Contrast",
-    style: "Dark Mode with High Contrast & Asymmetric Grids",
-    content: "Alan Hirsch Hero Section",
-    date: "2024",
-    year: 2024,
-    score: 91,
-    type: "Hero Experiences",
-    movement: "Dark High Contrast",
-    tags: ["Dark", "High contrast", "Hero"],
-    order: 4,
-  },
-  {
-    id: "alan-hirsch-hero-5",
-    name: "Alan Hirsch - GSAP Academic",
-    style: "GSAP-Powered with Classic Academic Palette",
-    content: "Alan Hirsch Hero Section",
-    date: "2024",
-    year: 2024,
-    score: 95,
-    type: "Interactive Systems",
-    movement: "GSAP Academic Motion",
-    tags: ["GSAP", "Motion", "Academic"],
-    order: 5,
-  },
-  {
-    id: "alan-hirsch-hero-6",
-    name: "Alan Hirsch - Editorial Print",
-    style: "Editorial Print Design",
-    content: "Alan Hirsch Hero Section",
-    date: "2024",
-    year: 2024,
-    score: 93,
-    type: "Editorial & Narrative",
-    movement: "Editorial Print",
-    tags: ["Print", "Editorial", "Grid"],
-    order: 6,
-  },
-  {
-    id: "alan-hirsch-hero-7",
-    name: "Alan Hirsch - Asymmetrical Organic",
-    style: "Asymmetrical Layouts with Organic Shapes",
-    content: "Alan Hirsch Hero Section",
-    date: "2024",
-    year: 2024,
-    score: 94,
-    type: "Editorial & Narrative",
-    movement: "Asymmetrical Organic",
-    tags: ["Organic", "Asymmetric", "Hero"],
-    order: 7,
-  },
-  {
-    id: "alan-hirsch-hero-8",
-    name: "Alan Hirsch - Neumorphism Data",
-    style: "Neumorphism with Data Visualization",
-    content: "Alan Hirsch Hero Section",
-    date: "2024",
-    year: 2024,
-    score: 92,
-    type: "Interactive Systems",
-    movement: "Neumorphic Data Visualization",
-    tags: ["Neumorphism", "Data", "Cards"],
-    order: 8,
-  },
-  {
-    id: "alan-hirsch-hero-9",
-    name: "Alan Hirsch - Narrative Storytelling",
-    style: "Narrative Storytelling with Magazine Layout",
-    content: "Alan Hirsch Hero Section",
-    date: "2024",
-    year: 2024,
-    score: 96,
-    type: "Editorial & Narrative",
-    movement: "Narrative Storytelling",
-    tags: ["Narrative", "Magazine", "Story"],
-    order: 9,
-  },
-  {
-    id: "alan-hirsch-hero-10",
-    name: "Alan Hirsch - Interactive Portfolio",
-    style: "Interactive Portfolio Showcase",
-    content: "Alan Hirsch Hero Section",
-    date: "2024",
-    year: 2024,
-    score: 93,
-    type: "Hero Experiences",
-    movement: "Interactive Portfolio",
-    tags: ["Portfolio", "Interactive", "Hover"],
-    order: 10,
-  },
-  {
-    id: "alan-hirsch-hero-11",
-    name: "Alan Hirsch - Immersive 3D Exhibition",
-    style: "Immersive 3D Exhibition with Gallery Layout",
-    content: "Alan Hirsch Hero Section",
-    date: "2024",
-    year: 2024,
-    score: 97,
-    type: "Interactive Systems",
-    movement: "Immersive Exhibition",
-    tags: ["3D", "Gallery", "Immersive"],
-    order: 11,
-  },
-  {
-    id: "alan-hirsch-hero-12",
-    name: "Alan Hirsch - Calendar Integrated",
-    style: "Calendar-Integrated Homepage with Multiple Views",
-    content: "Alan Hirsch Hero Section",
-    date: "2024",
-    year: 2024,
-    score: 95,
-    type: "Interactive Systems",
-    movement: "Calendar Integration",
-    tags: ["Calendar", "Scheduling", "Product"],
-    order: 12,
-  },
-  {
-    id: "alan-hirsch-hero-13",
-    name: "Alan Hirsch - Blog Article Focused",
-    style: "Blog/Article-Focused Homepage with Magazine Layout",
-    content: "Alan Hirsch Hero Section",
-    date: "2024",
-    year: 2024,
-    score: 94,
-    type: "Editorial & Narrative",
-    movement: "Blog Magazine",
-    tags: ["Articles", "Magazine", "Editorial"],
-    order: 13,
-  },
-  {
-    id: "alan-hirsch-hero-14",
-    name: "CardForge - AI Baseball Card Customizer",
-    style: "AI-Powered Baseball Card Customizer",
-    content: "Baseball Card Customizer",
-    date: "2024",
-    year: 2024,
-    score: 98,
-    type: "AI & Tools",
-    movement: "AI Baseball Customizer",
-    tags: ["AI", "Customizer", "Tool"],
-    order: 14,
-  },
-  {
-    id: "alan-hirsch-hero-15",
-    name: "Alan Hirsch - Sleek Modern",
-    style: "Sleek Modern Design with Gradient Aesthetics",
-    content: "Alan Hirsch Hero Section",
-    date: "2024",
-    year: 2024,
-    score: 96,
-    type: "Hero Experiences",
-    movement: "Sleek Modern",
-    tags: ["Modern", "Gradient", "Hero"],
-    order: 15,
-  },
-  {
-    id: "alan-hirsch-hero-16",
-    name: "Alan Hirsch - Scholarly Artistic Excellence",
-    style: "Scholarly Artistic Excellence with Academic Rigor",
-    content: "Alan Hirsch Hero Section",
-    date: "2024",
-    year: 2024,
-    score: 99,
-    type: "Editorial & Narrative",
-    movement: "Scholarly Artistic",
-    tags: ["Scholarly", "Artistic", "Print"],
-    order: 16,
-  },
-  {
-    id: "alan-hirsch-hero-17",
-    name: "Alan Hirsch - Scholarly Artistic Excellence v2",
-    style: "Scholarly Artistic Excellence v2 with Refined Layout",
-    content: "Alan Hirsch Hero Section",
-    date: "2024",
-    year: 2024,
-    score: 99,
-    type: "Editorial & Narrative",
-    movement: "Scholarly Excellence v2",
-    tags: ["Scholarly", "Serif", "Museum"],
-    order: 17,
-  },
-  {
-    id: "alan-hirsch-hero-18",
-    name: "Knowledge Center with AI Integration",
-    style: "Knowledge Center with Search, Filtering, AI Widgets, Newsletter",
-    content: "Knowledge Center",
-    date: "2024",
-    year: 2024,
-    score: 97,
-    type: "AI & Tools",
-    movement: "Knowledge Center + AI",
-    tags: ["Search", "AI", "Knowledge"],
-    order: 18,
-  },
-  {
-    id: "alan-hirsch-hero-19",
-    name: "Custom LMS - mDNA Learning Platform",
-    style: "Custom LMS with Scholarly Design for Teaching mDNA",
-    content: "LMS Platform",
-    date: "2024",
-    year: 2024,
-    score: 98,
-    type: "Education Platforms",
-    movement: "Custom LMS",
-    tags: ["LMS", "Learning", "Scholarly"],
-    order: 19,
-  },
-  {
-    id: "alan-hirsch-hero-20",
-    name: "Long-Form Reader + AI Insight",
-    style: "Long-form reader with contextual AI assistant",
-    content: "Reader Interface",
-    date: "2025",
-    year: 2025,
-    score: 98,
-    type: "Education Platforms",
-    movement: "Long-Form Reader",
-    tags: ["Reader", "AI", "Insight"],
-    order: 20,
-  },
-  {
-    id: "alan-hirsch-hero-21",
-    name: "Movemental Editions Bookstore",
-    style: "Ecommerce bookstore grid with filters, bundles, and inventory states",
-    content: "Commerce Experience",
-    date: "2025",
-    year: 2025,
-    score: 97,
-    type: "Interactive Systems",
-    movement: "Movemental Bookstore Commerce",
-    tags: ["Ecommerce", "Bookstore", "Filters"],
-    order: 21,
-  },
-  {
-    id: "alan-hirsch-hero-22",
-    name: "Movement Architects Cohort Hub",
-    style: "Cohort-based LMS with prerequisites, progress tracker, live calendar",
-    content: "LMS Platform",
-    date: "2025",
-    year: 2025,
-    score: 99,
-    type: "Education Platforms",
-    movement: "Cohort-Based LMS",
-    tags: ["LMS", "Cohort", "Calendar"],
-    order: 22,
-  },
-  {
-    id: "alan-hirsch-hero-23",
-    name: "Micro-Lesson Pathways",
-    style: "Snackable LMS with AI tutor, adaptive feed, badge shelf",
-    content: "LMS Platform",
-    date: "2025",
-    year: 2025,
-    score: 97,
-    type: "Education Platforms",
-    movement: "Micro-Lesson Pathways",
-    tags: ["LMS", "AI Tutor", "Badges"],
-    order: 23,
-  },
-  {
-    id: "alan-hirsch-hero-24",
-    name: "Practitioner Studio LMS",
-    style: "Workshop library with assignments, peer feedback, resource locker",
-    content: "LMS Platform",
-    date: "2025",
-    year: 2025,
-    score: 98,
-    type: "Education Platforms",
-    movement: "Practitioner Studio",
-    tags: ["Workshops", "Assignments", "Feedback"],
-    order: 24,
-  },
-  {
-    id: "alan-hirsch-hero-25",
-    name: "Movemental Bookstore Grid",
-    style: "Swiss editorial commerce grid with bundle builder",
-    content: "Commerce Experience",
-    date: "2025",
-    year: 2025,
-    score: 96,
-    type: "Interactive Systems",
-    movement: "Curated Commerce",
-    tags: ["Ecommerce", "Editorial", "Bundles"],
-    order: 25,
-  },
-  {
-    id: "alan-hirsch-hero-26",
-    name: "Author Spotlight Storefront",
-    style: "Immersive neon storefront with signed editions + events",
-    content: "Commerce Experience",
-    date: "2025",
-    year: 2025,
-    score: 97,
-    type: "Interactive Systems",
-    movement: "Spotlight Commerce",
-    tags: ["Author", "Events", "Neon"],
-    order: 26,
-  },
-  {
-    id: "alan-hirsch-hero-27",
-    name: "Research Library Marketplace",
-    style: "Data-rich marketplace with split-pane filters and licensing CTA",
-    content: "Commerce Experience",
-    date: "2025",
-    year: 2025,
-    score: 98,
-    type: "Interactive Systems",
-    movement: "Research Marketplace",
-    tags: ["Research", "Dashboard", "Filters"],
-    order: 27,
-  },
-  {
-    id: "alan-hirsch-hero-28",
-    name: "Scholarly Long-Form Reader",
-    style: "Typographic reader with TOC sidebar, footnotes, progress tracker",
-    content: "Reader Interface",
-    date: "2025",
-    year: 2025,
-    score: 95,
-    type: "Education Platforms",
-    movement: "Scholarly Reader",
-    tags: ["Reader", "Footnotes", "Typography"],
-    order: 28,
-  },
-  {
-    id: "alan-hirsch-hero-29",
-    name: "Immersive Story Scroll",
-    style: "Cinematic parallax scroll with video hero and audio commentary",
-    content: "Reader Interface",
-    date: "2025",
-    year: 2025,
-    score: 97,
-    type: "Education Platforms",
-    movement: "Immersive Storytelling",
-    tags: ["Story", "Parallax", "Audio"],
-    order: 29,
-  },
-  {
-    id: "alan-hirsch-hero-30",
-    name: "Accessible Reading Studio",
-    style: "Reader with typography controls, contrast toggles, AI insights",
-    content: "Reader Interface",
-    date: "2025",
-    year: 2025,
-    score: 96,
-    type: "Education Platforms",
-    movement: "Accessible Reader",
-    tags: ["Accessibility", "AI", "Typography"],
-    order: 30,
-  },
-  {
-    id: "alan-hirsch-hero-31",
-    name: "Knowledge Vault",
-    style: "Federated search with filters, pinned queue, save-for-later",
-    content: "Archive & Resources",
-    date: "2025",
-    year: 2025,
-    score: 97,
-    type: "Interactive Systems",
-    movement: "Knowledge Hub",
-    tags: ["Search", "Filters", "Queue"],
-    order: 31,
-  },
-  {
-    id: "alan-hirsch-hero-32",
-    name: "Movemental Resource Atlas",
-    style: "Map-based resource explorer with pins and download tracker",
-    content: "Archive & Resources",
-    date: "2025",
-    year: 2025,
-    score: 96,
-    type: "Interactive Systems",
-    movement: "Resource Atlas",
-    tags: ["Map", "Pins", "Downloads"],
-    order: 32,
-  },
-  {
-    id: "alan-hirsch-hero-33",
-    name: "All-Access Control Room",
-    style: "Control dashboard with tag matrix, updates, AI concierge",
-    content: "Archive & Resources",
-    date: "2025",
-    year: 2025,
-    score: 98,
-    type: "Interactive Systems",
-    movement: "Control Room",
-    tags: ["Dashboard", "AI", "Tags"],
-    order: 33,
-  },
-  {
-    id: "alan-hirsch-hero-34",
-    name: "Agent Summon Panel",
-    style: "Docked panel listing agents with prompt composer",
-    content: "Agentic UI",
-    date: "2025",
-    year: 2025,
-    score: 95,
-    type: "Interactive Systems",
-    movement: "Agentic Frontend",
-    tags: ["Agents", "Prompt", "Summon"],
-    order: 34,
-  },
-  {
-    id: "alan-hirsch-hero-35",
-    name: "Contextual Agent Grid",
-    style: "Agent grid with capabilities, metrics, escalation paths",
-    content: "Agentic UI",
-    date: "2025",
-    year: 2025,
-    score: 96,
-    type: "Interactive Systems",
-    movement: "Agent Grid",
-    tags: ["Agents", "Metrics", "Escalation"],
-    order: 35,
-  },
-  {
-    id: "alan-hirsch-hero-36",
-    name: "Adaptive Workflow Builder",
-    style: "Workflow stages with agent assignments and notifications",
-    content: "Agentic UI",
-    date: "2025",
-    year: 2025,
-    score: 97,
-    type: "Interactive Systems",
-    movement: "Workflow Builder",
-    tags: ["Workflow", "Stages", "Agents"],
-    order: 36,
-  },
-  {
-    id: "brad-brisco-hero-1",
-    name: "Brad Brisco - Whiteboard Praxis Console",
-    style: "Grayscale hero with field lab stats, prompts, and monochrome portraits",
-    content: "Hero & Home Experience",
-    date: "2025",
-    year: 2025,
-    score: 97,
-    type: "Hero Experiences",
-    movement: "Monochrome Whiteboard Minimalism",
-    tags: ["Brad Brisco", "Whiteboard", "Grayscale"],
-    order: 29,
-  },
-  {
-    id: "brad-brisco-hero-2",
-    name: "Brad Brisco - Grayscale Operating System",
-    style: "Three-mode hero with diagnostics, residency cohorts, and signal feed",
-    content: "Hero & Dashboard",
-    date: "2025",
-    year: 2025,
-    score: 96,
-    type: "Interactive Systems",
-    movement: "Monochrome Operations",
-    tags: ["Brad Brisco", "Dashboard", "Diagnostics"],
-    order: 30,
-  },
-  {
-    id: "brad-brisco-hero-3",
-    name: "Brad Brisco - Longform Reader Home",
-    style: "Editorial grayscale reader with chapters, timeline, and testimonials",
-    content: "Home & Editorial",
-    date: "2025",
-    year: 2025,
-    score: 96,
-    type: "Editorial & Narrative",
-    movement: "Monochrome Story",
-    tags: ["Brad Brisco", "Reader", "Editorial"],
-    order: 31,
-  },
-  {
-    id: "brad-brisco-hero-4",
-    name: "Brad Brisco - Content-First Monochrome Hero",
-    style: "Minimalist grayscale hero with white background and whiteboard prompts",
-    content: "Hero Experience",
-    date: "2025",
-    year: 2025,
-    score: 95,
-    type: "Hero Experiences",
-    movement: "Content-First Minimalism",
-    tags: ["Brad Brisco", "Minimal", "Grayscale"],
-    order: 32,
-  },
-]
+import { archivedDesigns, type ArchivedDesign } from "./designData"
 
 const typeOrder = [
   "Hero Experiences",
@@ -547,6 +11,8 @@ const typeOrder = [
   "Interactive Systems",
   "Education Platforms",
   "AI & Tools",
+  "Archive & Resources",
+  "Agentic UI",
 ]
 
 const sortOptions = [
@@ -557,6 +23,56 @@ const sortOptions = [
   { value: "alpha", label: "Alphabetical" },
 ]
 
+const palettePresets: Record<string, string[]> = {
+  "Hero Experiences": ["#050505", "#3b3b3b", "#b8b8b1", "#f8f7f3"],
+  "Editorial & Narrative": ["#1a1a1a", "#4a4a4a", "#c3b59f", "#faf9f6"],
+  "Interactive Systems": ["#050f1f", "#0f172a", "#94a3b8", "#f0f4f8"],
+  "Education Platforms": ["#0f172a", "#334155", "#94a3b8", "#f8fafc"],
+  "AI & Tools": ["#030617", "#1e1b4b", "#a5b4fc", "#f4f6ff"],
+  "Archive & Resources": ["#111827", "#374151", "#9ca3af", "#f3f4f6"],
+  "Agentic UI": ["#020617", "#0f172a", "#475569", "#e2e8f0"],
+  default: ["#111111", "#333333", "#999999", "#f4f4f4"],
+}
+
+const typographyPresets: Record<
+  string,
+  { heading: string; body: string; accent: string }
+> = {
+  "Hero Experiences": { heading: "Neue Montreal", body: "Inter", accent: "Space Mono" },
+  "Editorial & Narrative": { heading: "Playfair Display", body: "Source Serif", accent: "Archivo" },
+  "Interactive Systems": { heading: "Söhne", body: "Inter", accent: "JetBrains Mono" },
+  "Education Platforms": { heading: "Canela", body: "IBM Plex Sans", accent: "Maison Mono" },
+  "AI & Tools": { heading: "Whyte", body: "General Sans", accent: "Space Grotesk" },
+  "Archive & Resources": { heading: "Gerstner Programm", body: "Inter", accent: "IBM Plex Mono" },
+  "Agentic UI": { heading: "Suisse Intl", body: "GT America", accent: "Operator Mono" },
+  default: { heading: "Inter", body: "Inter", accent: "Space Mono" },
+}
+
+const movementDescriptions: Record<string, string> = {
+  "Hero Experiences": "Immersive hero canvases with cinematic typography, motion cues, and visceral storytelling.",
+  "Editorial & Narrative": "Magazine-grade spreads with refined serif systems, scholastic structure, and narrative cadence.",
+  "Interactive Systems": "Product-forward views with dashboards, filters, and systems logic modeled for digital products.",
+  "Education Platforms": "Readers, LMS flows, and courseware scaffolds built for learning rituals and pedagogy.",
+  "AI & Tools": "Applied AI sandboxes, toolkits, and experimental builders exploring agentic workflows.",
+  "Archive & Resources": "Searchable collections, atlases, and vaults curating Movemental research artifacts.",
+  "Agentic UI": "Agent consoles, summon panels, and workflow builders that choreograph hybrid human+AI teams.",
+}
+
+const getPalette = (type: string) => palettePresets[type] ?? palettePresets.default
+const getTypography = (type: string) => typographyPresets[type] ?? typographyPresets.default
+
+const getContrastColor = (hex: string) => {
+  const normalized = hex.replace("#", "")
+  const value = parseInt(normalized.length === 3 ? normalized.repeat(2) : normalized, 16)
+  const r = (value >> 16) & 255
+  const g = (value >> 8) & 255
+  const b = value & 255
+  const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255
+  return luminance > 0.65 ? "#1a1a1a" : "#f8f8f8"
+}
+
+const keywordsForDesign = (design: ArchivedDesign) => [design.movement, design.content, ...design.tags].join(" • ")
+
 const typeFilters = ["All", ...typeOrder]
 const movementFilters = ["All", ...new Set(archivedDesigns.map((design) => design.movement))]
 
@@ -565,6 +81,8 @@ export default function ArchivePage() {
   const [movementFilter, setMovementFilter] = useState("All")
   const [sort, setSort] = useState("score-desc")
   const [search, setSearch] = useState("")
+  const [selectedDesign, setSelectedDesign] = useState<ArchivedDesign | null>(null)
+  const [previewId, setPreviewId] = useState<string | null>(null)
 
   const filteredDesigns = useMemo(() => {
     const query = search.trim().toLowerCase()
@@ -619,164 +137,342 @@ export default function ArchivePage() {
   )
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-950">
-      <div className="max-w-6xl mx-auto px-6 py-16">
-        <header className="mb-12">
-          <p className="text-sm uppercase tracking-[0.4em] text-gray-700 dark:text-gray-300 mb-4">Archive</p>
-          <h1 className="text-5xl md:text-6xl font-bold mb-6 text-gray-900 dark:text-gray-100">Design Archive</h1>
-          <p className="text-xl text-gray-700 dark:text-gray-300 max-w-3xl">
-            Explore every Movemental design experiment. Filter by type, movement, or score and dive into the exact execution
-            instantly.
+    <div className="min-h-screen bg-[#f8f7f3] text-[#131313] dark:bg-[#020202] dark:text-gray-100">
+      <div className="relative max-w-6xl mx-auto px-6 py-20 space-y-16">
+        <header className="space-y-6">
+          <p className="text-xs uppercase tracking-[0.65em] text-gray-600 dark:text-gray-300">Movemental Archive</p>
+          <h1 className="text-5xl md:text-6xl lg:text-[4.5rem] leading-[1.05] font-[var(--font-playfair)]">
+            _Scholarly Exhibition Catalogue
+          </h1>
+          <p className="text-lg md:text-xl text-gray-700 dark:text-gray-300 max-w-3xl">
+            Inspired by Alan Hirsch&rsquo;s Scholarly Artistic Excellence (#16), this archive behaves like a curated museum wall.
+            Each template card carries a catalog number, palette swatches, typographic dossier, and mini-window preview—plus a
+            progressive modal that documents the style language in depth.
           </p>
         </header>
 
-        <div className="sticky top-4 z-10 mb-12 bg-white/90 dark:bg-gray-900/80 backdrop-blur rounded-3xl border border-gray-200 dark:border-gray-800 p-6 shadow-xl">
-          <div className="flex flex-col gap-6">
-            <div className="flex flex-wrap gap-3">
-              {typeFilters.map((type) => (
-                <motion.button
-                  key={type}
-                  onClick={() => setActiveType(type)}
-                  className={`relative px-5 py-2 rounded-full text-sm font-semibold border transition-all ${
-                    activeType === type
-                      ? "bg-gray-900 text-white border-gray-900"
-                      : "border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-500"
-                  }`}
-                  whileTap={{ scale: 0.97 }}
-                >
-                  {type}
-                </motion.button>
-              ))}
-            </div>
-
-            <div className="grid lg:grid-cols-4 gap-4">
-              <input
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search name, style, tags"
-                className="lg:col-span-2 px-4 py-3 rounded-2xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-900/20"
-              />
-              <select
-                value={movementFilter}
-                onChange={(e) => setMovementFilter(e.target.value)}
-                className="px-4 py-3 rounded-2xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
-              >
-                {movementFilters.map((movement) => (
-                  <option key={movement} value={movement}>
-                    {movement}
-                  </option>
-                ))}
-              </select>
-              <select
-                value={sort}
-                onChange={(e) => setSort(e.target.value)}
-                className="px-4 py-3 rounded-2xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100"
-              >
-                {sortOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="flex flex-wrap items-center gap-3 text-sm text-gray-700 dark:text-gray-300">
-              <span>{filteredDesigns.length} design snapshots</span>
-              <span>•</span>
+        <div className="rounded-[32px] border border-gray-200 dark:border-gray-800 bg-white/90 dark:bg-gray-900/70 backdrop-blur px-8 py-10 space-y-8 shadow-[0_40px_120px_-80px_rgba(15,23,42,0.8)]">
+          <div className="flex flex-wrap gap-3">
+            {typeFilters.map((type) => (
               <button
-                onClick={() => {
-                  setActiveType("All")
-                  setMovementFilter("All")
-                  setSort("score-desc")
-                  setSearch("")
-                }}
-                className="underline underline-offset-4 text-gray-600 dark:text-gray-400"
+                key={type}
+                onClick={() => setActiveType(type)}
+                className={`px-5 py-2 rounded-full text-[10px] font-semibold tracking-[0.35em] uppercase border transition-all ${
+                  activeType === type
+                    ? "bg-[#131313] text-[#fefcf8] border-[#131313]"
+                    : "border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-500"
+                }`}
               >
-                Reset selector
+                {type}
               </button>
-            </div>
+            ))}
+          </div>
+
+          <div className="grid lg:grid-cols-4 gap-4">
+            <input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search by title, palette, tags, movement"
+              className="lg:col-span-2 px-4 py-3 rounded-2xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-900/20"
+            />
+            <select
+              value={movementFilter}
+              onChange={(e) => setMovementFilter(e.target.value)}
+              className="px-4 py-3 rounded-2xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100"
+            >
+              {movementFilters.map((movement) => (
+                <option key={movement} value={movement}>
+                  {movement}
+                </option>
+              ))}
+            </select>
+            <select
+              value={sort}
+              onChange={(e) => setSort(e.target.value)}
+              className="px-4 py-3 rounded-2xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100"
+            >
+              {sortOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-4 text-[11px] uppercase tracking-[0.35em] text-gray-600 dark:text-gray-400">
+            <span>{filteredDesigns.length} templates on display</span>
+            <span>•</span>
+            <button
+              onClick={() => {
+                setActiveType("All")
+                setMovementFilter("All")
+                setSort("score-desc")
+                setSearch("")
+              }}
+              className="underline underline-offset-4"
+            >
+              Reset filters
+            </button>
           </div>
         </div>
 
         {filteredDesigns.length === 0 && (
-          <div className="p-12 rounded-3xl border border-dashed border-gray-300 dark:border-gray-700 text-center">
-            <p className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-3">No matches yet.</p>
-            <p className="text-gray-700 dark:text-gray-300">
-              Adjust the type or movement filters to see archived executions.
+          <div className="p-16 rounded-[36px] border border-dashed border-gray-300 dark:border-gray-700 text-center bg-white/70 dark:bg-gray-900/50">
+            <p className="text-3xl font-semibold mb-4">No templates match yet.</p>
+            <p className="text-gray-700 dark:text-gray-300 max-w-xl mx-auto">
+              Adjust the filters or search phrasing and the gallery will reflow instantly.
             </p>
           </div>
         )}
 
-        <div className="space-y-12">
+        <div className="space-y-16">
           <AnimatePresence>
-            {visibleTypes.map((type) => {
+            {visibleTypes.map((type, typeIndex) => {
               const designs = groupedByType.get(type) ?? []
-              if (designs.length === 0) return null
+              if (!designs.length) return null
 
               return (
                 <motion.section
                   key={type}
-                  layout
-                  initial={{ opacity: 0, y: 30 }}
+                  initial={{ opacity: 0, y: 40 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -30 }}
-                  transition={{ duration: 0.4 }}
-                  className="p-8 rounded-3xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-[0_30px_60px_-40px_rgba(15,23,42,0.45)]"
+                  transition={{ duration: 0.5, delay: typeIndex * 0.05 }}
+                  className="relative rounded-[40px] border border-gray-200 dark:border-gray-800 bg-white dark:bg-[#090909] overflow-hidden"
                 >
-                  <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
-                    <div>
-                      <p className="text-xs uppercase tracking-[0.4em] text-gray-600 dark:text-gray-400">Type</p>
-                      <h2 className="text-3xl font-semibold text-gray-900 dark:text-gray-100">{type}</h2>
+                  <div className="absolute inset-0 opacity-[0.05] bg-[radial-gradient(circle_at_top,_rgba(0,0,0,0.25),_transparent_60%)] dark:bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.04),_transparent_60%)]" />
+                  <div className="relative p-10 space-y-8">
+                    <div className="flex flex-wrap items-start justify-between gap-4">
+                      <div>
+                        <p className="text-[10px] uppercase tracking-[0.7em] text-gray-500 dark:text-gray-400">Gallery Type</p>
+                        <h2 className="text-4xl md:text-5xl font-[var(--font-playfair)]">{type}</h2>
+                      </div>
+                      <div className="text-sm text-gray-600 dark:text-gray-300 max-w-md">
+                        {movementDescriptions[type] ?? "Curated study in applied design systems."}
+                      </div>
+                      <span className="px-4 py-2 rounded-full text-[10px] font-semibold tracking-[0.4em] uppercase border border-gray-200 dark:border-gray-700">
+                        {designs.length} pieces
+                      </span>
                     </div>
-                    <span className="px-4 py-2 rounded-full text-sm font-semibold bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100">
-                      {designs.length} concepts
-                    </span>
-                  </div>
 
-                  <motion.div layout className="grid md:grid-cols-2 gap-5">
-                    {designs.map((design) => (
-                      <motion.div
-                        key={design.id}
-                        layout
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.3 }}
-                        className="group relative overflow-hidden rounded-2xl border border-gray-200 dark:border-gray-800 bg-gradient-to-br from-white to-gray-50 dark:from-gray-900 dark:to-gray-950"
-                      >
-                        <Link href={`/archive/${design.id}`} className="block p-6">
-                          <div className="flex items-center justify-between mb-4">
-                            <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">{design.name}</h3>
-                            <span className="text-lg font-semibold text-gray-900 dark:text-gray-100">{design.score}%</span>
-                          </div>
-                          <p className="text-sm text-gray-700 dark:text-gray-300 mb-3">{design.style}</p>
-                          <div className="flex flex-wrap gap-2 mb-4">
-                            {design.tags.map((tag) => (
-                              <span
-                                key={tag}
-                                className="px-3 py-1 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                    <div className="grid md:grid-cols-2 gap-7">
+                      {designs.map((design) => {
+                        const cardId = `#${design.order.toString().padStart(3, "0")}`
+                        const palette = getPalette(design.type)
+                        return (
+                          <article
+                            key={design.id}
+                            className="relative border border-gray-200 dark:border-gray-800 rounded-[30px] p-6 bg-white/90 dark:bg-gray-950/70 shadow-[0_20px_60px_-50px_rgba(15,23,42,0.9)]"
+                          >
+                            <div className="flex items-center justify-between text-[10px] uppercase tracking-[0.5em] text-gray-500 dark:text-gray-400 mb-4">
+                              <span>{cardId}</span>
+                              <span>{design.year}</span>
+                            </div>
+                            <h3 className="text-2xl font-semibold font-[var(--font-playfair)] text-gray-900 dark:text-gray-100">
+                              {design.name}
+                            </h3>
+                            <p className="text-sm text-gray-600 dark:text-gray-300 mt-2">{design.style}</p>
+                            <p className="text-[10px] uppercase tracking-[0.4em] text-gray-500 dark:text-gray-400 mt-3">
+                              {design.movement} · {design.content}
+                            </p>
+
+                            <div className="flex flex-wrap gap-2 mt-4">
+                              {design.tags.map((tag) => (
+                                <span
+                                  key={tag}
+                                  className="px-3 py-1 rounded-full text-[11px] font-medium bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100"
+                                >
+                                  {tag}
+                                </span>
+                              ))}
+                            </div>
+
+                            <div className="flex items-center gap-2 mt-5">
+                              {palette.slice(0, 4).map((color) => (
+                                <span
+                                  key={`${design.id}-${color}`}
+                                  className="flex-1 h-1.5 rounded-full"
+                                  style={{ backgroundColor: color }}
+                                />
+                              ))}
+                            </div>
+
+                            <div className="grid grid-cols-3 gap-3 mt-6 text-[11px] uppercase tracking-[0.3em] text-gray-600 dark:text-gray-300">
+                              <button
+                                onClick={() => setSelectedDesign(design)}
+                                className="col-span-2 border border-gray-300 dark:border-gray-700 rounded-full py-2 hover:bg-gray-900 hover:text-white dark:hover:bg-white/10 transition-colors"
                               >
-                                {tag}
+                                Style dossier
+                              </button>
+                              <button
+                                onClick={() => setPreviewId((prev) => (prev === design.id ? null : design.id))}
+                                className="border border-dashed border-gray-400 dark:border-gray-600 rounded-full py-2 lowercase tracking-[0.4em] text-gray-500 dark:text-gray-400 hover:border-gray-900 dark:hover:border-gray-200"
+                              >
+                                highlight preview
+                              </button>
+                            </div>
+
+                            <div className="mt-6 flex flex-wrap gap-3 text-sm font-medium">
+                              <Link
+                                href={`/archive/${design.id}`}
+                                className="px-4 py-2 rounded-full border border-gray-900 text-gray-900 dark:border-gray-100 dark:text-gray-100 hover:bg-gray-900 hover:text-white dark:hover:bg-gray-100 dark:hover:text-gray-900 transition-colors text-[11px] uppercase tracking-[0.3em]"
+                              >
+                                Launch template
+                              </Link>
+                              <span className="text-[11px] uppercase tracking-[0.4em] text-gray-500 dark:text-gray-400">
+                                Score {design.score}%
                               </span>
-                            ))}
-                          </div>
-                          <div className="flex flex-wrap items-center justify-between text-sm text-gray-700 dark:text-gray-300">
-                            <span>{design.movement}</span>
-                            <span>•</span>
-                            <span>{design.content}</span>
-                            <span>•</span>
-                            <span>{design.date}</span>
-                          </div>
-                        </Link>
-                        <div className="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-gray-900/0 via-gray-900/40 to-gray-900/0 dark:from-white/0 dark:via-white/40 dark:to-white/0 group-hover:scale-x-110 transition-transform" />
-                      </motion.div>
-                    ))}
-                  </motion.div>
+                            </div>
+
+                            {previewId === design.id && (
+                              <WindowedPreview design={design} onClose={() => setPreviewId(null)} />
+                            )}
+                          </article>
+                        )
+                      })}
+                    </div>
+                  </div>
                 </motion.section>
               )
             })}
           </AnimatePresence>
         </div>
       </div>
+
+      <AnimatePresence>
+        {selectedDesign && <DesignModal design={selectedDesign} onClose={() => setSelectedDesign(null)} />}
+      </AnimatePresence>
     </div>
+  )
+}
+
+function WindowedPreview({ design, onClose }: { design: ArchivedDesign; onClose: () => void }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: -10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -10 }}
+      className="absolute top-6 right-6 w-52 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-2xl overflow-hidden"
+    >
+      <div className="flex items-center justify-between px-3 py-2 text-[10px] uppercase tracking-[0.4em] border-b border-gray-200 dark:border-gray-800 text-gray-500 dark:text-gray-400">
+        <span>preview</span>
+        <button onClick={onClose} className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
+          ×
+        </button>
+      </div>
+      <div className="p-4 space-y-3">
+        <div className="rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+          <div className="flex items-center gap-1 px-3 py-2 text-[10px] uppercase tracking-[0.3em] text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-900">
+            <span className="w-2 h-2 rounded-full bg-gray-300" />
+            <span className="w-2 h-2 rounded-full bg-gray-400" />
+            <span className="w-2 h-2 rounded-full bg-gray-500" />
+            <span className="ml-2">Mini window</span>
+          </div>
+          <div className="p-3 bg-gradient-to-br from-gray-100 via-white to-gray-200 dark:from-gray-900 dark:via-gray-950 dark:to-black">
+            <p className="text-[10px] uppercase tracking-[0.4em] text-gray-600 dark:text-gray-300">{design.movement}</p>
+            <p className="text-xs text-gray-700 dark:text-gray-200 mt-2 line-clamp-3">{design.style}</p>
+          </div>
+        </div>
+        <Link
+          href={`/archive/${design.id}`}
+          className="block text-center text-[10px] uppercase tracking-[0.4em] text-gray-700 dark:text-gray-200 underline"
+        >
+          Open window
+        </Link>
+      </div>
+    </motion.div>
+  )
+}
+
+function DesignModal({ design, onClose }: { design: ArchivedDesign; onClose: () => void }) {
+  const palette = getPalette(design.type)
+  const typography = getTypography(design.type)
+
+  return (
+    <motion.div
+      className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center px-4"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      onClick={onClose}
+    >
+      <motion.div
+        initial={{ y: 60, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        exit={{ y: 40, opacity: 0 }}
+        transition={{ duration: 0.3 }}
+        className="relative max-w-3xl w-full rounded-[36px] border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950 p-8 shadow-2xl"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="flex items-start justify-between gap-6">
+          <div>
+            <p className="text-[10px] uppercase tracking-[0.5em] text-gray-500 dark:text-gray-400">Style dossier</p>
+            <h3 className="text-3xl font-[var(--font-playfair)] mt-2">{design.name}</h3>
+            <p className="text-sm text-gray-600 dark:text-gray-300 mt-2">{design.style}</p>
+          </div>
+          <button
+            onClick={onClose}
+            className="text-gray-500 hover:text-gray-900 dark:hover:text-white text-lg leading-none"
+          >
+            ×
+          </button>
+        </div>
+
+        <p className="text-base text-gray-700 dark:text-gray-300 mt-6">
+          {design.style} anchored in the {design.movement} movement. Expect {design.type.toLowerCase()} behaviors with emphasis on{" "}
+          {design.tags.join(", ")} and a {design.content.toLowerCase()} core.
+        </p>
+
+        <div className="grid md:grid-cols-2 gap-6 mt-8">
+          <div className="rounded-3xl border border-gray-200 dark:border-gray-800 p-5">
+            <p className="text-[10px] uppercase tracking-[0.4em] text-gray-500 dark:text-gray-400">Keywords</p>
+            <p className="text-base text-gray-800 dark:text-gray-100 mt-3">{keywordsForDesign(design)}</p>
+          </div>
+          <div className="rounded-3xl border border-gray-200 dark:border-gray-800 p-5">
+            <p className="text-[10px] uppercase tracking-[0.4em] text-gray-500 dark:text-gray-400">Color palette</p>
+            <div className="grid grid-cols-4 gap-2 mt-3">
+              {palette.map((color) => (
+                <div
+                  key={`${design.id}-${color}`}
+                  className="rounded-2xl py-6 flex flex-col items-center justify-center border border-gray-200/50 dark:border-gray-700/60"
+                  style={{ backgroundColor: color, color: getContrastColor(color) }}
+                >
+                  <span className="text-[10px] uppercase tracking-[0.4em]">HEX</span>
+                  <span className="text-xs font-semibold mt-1">{color.toUpperCase()}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="grid sm:grid-cols-3 gap-4 mt-6">
+          <div className="col-span-2 rounded-3xl border border-gray-200 dark:border-gray-800 p-5">
+            <p className="text-[10px] uppercase tracking-[0.4em] text-gray-500 dark:text-gray-400">Typography stack</p>
+            <div className="mt-4 space-y-4">
+              <div>
+                <p className="text-[10px] uppercase tracking-[0.4em] text-gray-500 dark:text-gray-400">Heading</p>
+                <p className="text-xl">{typography.heading}</p>
+              </div>
+              <div>
+                <p className="text-[10px] uppercase tracking-[0.4em] text-gray-500 dark:text-gray-400">Body</p>
+                <p className="text-lg">{typography.body}</p>
+              </div>
+              <div>
+                <p className="text-[10px] uppercase tracking-[0.4em] text-gray-500 dark:text-gray-400">Accent</p>
+                <p className="text-lg">{typography.accent}</p>
+              </div>
+            </div>
+          </div>
+          <div className="rounded-3xl border border-gray-200 dark:border-gray-800 p-5">
+            <p className="text-[10px] uppercase tracking-[0.4em] text-gray-500 dark:text-gray-400">Launch</p>
+            <Link
+              href={`/archive/${design.id}`}
+              className="mt-4 block text-center px-4 py-3 rounded-full border border-gray-900 dark:border-gray-100 text-[11px] uppercase tracking-[0.4em] hover:bg-gray-900 hover:text-white dark:hover:bg-white dark:hover:text-gray-900 transition-colors"
+            >
+              View template
+            </Link>
+          </div>
+        </div>
+      </motion.div>
+    </motion.div>
   )
 }
